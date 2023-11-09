@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: epitechtimemachine
+  namespace: namespace-workflow-1699527579049
+spec:
+  type: LoadBalancer
+  selector:
+    app: epitechtimemachine
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
