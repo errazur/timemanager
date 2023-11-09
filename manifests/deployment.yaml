@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: epitechtimemachine
+  labels:
+    app: epitechtimemachine
+  namespace: namespace-workflow-1699527579049
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: epitechtimemachine
+  template:
+    metadata:
+      labels:
+        app: epitechtimemachine
+    spec:
+      containers:
+        - name: epitechtimemachine
+          image: epitech.azurecr.io/image-workflow-1699527579049:latest
+          ports:
+            - containerPort: 80
