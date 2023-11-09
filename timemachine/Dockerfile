@@ -1,40 +1,30 @@
-FROM erlang:25.2-alpine as builder
+FROM elixir
 
-RUN apk add --update tar curl git bash make libc-dev gcc g++ && \
-    rm -rf /var/cache/apk/*
+WORKDIR /app
 
-RUN set -xe \
-    && curl -fSL -o rebar3 "https://s3.amazonaws.com/rebar3/rebar3" \
-    && chmod +x ./rebar3 \
-    && ./rebar3 local install \
-    && rm ./rebar3
+COPY ../ ./
 
-WORKDIR /usr/src/app
-COPY . /usr/src/app
+EXPOSE 8080
+EXPOSE 3000
+EXPOSE 987
+EXPOSE 4000
+EXPOSE 5432
 
-ENV PATH "$PATH:/root/.cache/rebar3/bin"
-RUN rebar3 as prod tar
+RUN apt-get update -y
+RUN apt-get install -y inotify-tools
 
-RUN mkdir -p /opt/rel
-RUN tar -zxvf /usr/src/app/_build/prod/rel/*/*.tar.gz -C /opt/rel
+RUN mix local.hex
+RUN mix archive.install hex phx_new
+RUN mix deps.get
 
-RUN relname=$(ls _build/prod/rel) ; echo $relname > /opt/rel/__relname
+# Installation de PostgreSQL
+RUN apt-get install -y postgresql postgresql-contrib
 
-FROM alpine:3.15
+# Configuration de PostgreSQL
+USER postgres
+RUN /etc/init.d/postgresql start &&\
+    psql --command "ALTER USER postgres PASSWORD 'root';" &&\
+    createdb -O postgres timemachine_dev
+USER root
 
-RUN apk add --no-cache openssl-dev ncurses libstdc++ libgcc
-
-WORKDIR /opt/rel
-
-ENV RELX_REPLACE_OS_VARS true
-ENV HTTP_PORT 4000
-
-COPY --from=builder /opt/rel /opt/rel
-
-EXPOSE 4000 4000
-
-RUN ln -s /opt/rel/bin/$(cat /opt/rel/__relname) /opt/rel/bin/start_script
-ENTRYPOINT ["/opt/rel/bin/start_script"]
-
-CMD ["foreground"]
-
+CMD service postgresql start && mix ecto.create && mix ecto.migrate && mix phx.server
