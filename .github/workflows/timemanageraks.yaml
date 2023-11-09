@@ -1,9 +1,9 @@
 name: timemanageraks
-"on":
-    push:
-        branches:
-            - main
-    workflow_dispatch: {}
+on:
+  workflow_run:
+    workflows: ["Elixir CI"]
+    types:
+      - completed
 env:
     ACR_RESOURCE_GROUP: Epitech
     AZURE_CONTAINER_REGISTRY: epitech
