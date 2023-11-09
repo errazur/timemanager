@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timemanageraks
+  labels:
+    app: timemanageraks
+  namespace: namespace-workflow-1699536823239
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: timemanageraks
+  template:
+    metadata:
+      labels:
+        app: timemanageraks
+    spec:
+      containers:
+        - name: timemanageraks
+          image: epitech.azurecr.io/image-workflow-1699536823239:latest
+          ports:
+            - containerPort: 4000
