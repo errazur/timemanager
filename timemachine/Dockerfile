@@ -10,7 +10,7 @@ RUN set -xe \
     && rm ./rebar3
 
 WORKDIR /usr/src/app
-COPY . /usr/src/app
+COPY .. /usr/src/app
 
 ENV PATH "$PATH:/root/.cache/rebar3/bin"
 RUN rebar3 as prod tar
