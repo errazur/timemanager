@@ -27,4 +27,4 @@ RUN /etc/init.d/postgresql start &&\
     createdb -O postgres timemachine_dev
 USER root
 
-CMD service postgresql start && mix ecto.create && mix setup && mix phx.server
+CMD service postgresql start && mix ecto.create && mix ecto.migrate && mix phx.server
