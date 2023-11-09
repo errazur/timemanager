@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Time Machine</string>
+    <string name="title_activity_main">Time Machine</string>
+    <string name="package_name">epitech.msc.timemanager</string>
+    <string name="custom_url_scheme">epitech.msc.timemanager</string>
+</resources>
