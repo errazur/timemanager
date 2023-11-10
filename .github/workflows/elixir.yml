@@ -45,4 +45,4 @@ jobs:
     - name: Create and migrate the database
       run: cd timemachine && MIX_ENV=test mix ecto.migrate
     - name: Run tests
-      run: cd timemachine && mix test
+      run: cd timemachine && mix phx.server
