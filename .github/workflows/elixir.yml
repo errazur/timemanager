@@ -1,0 +1,48 @@
+name: Elixir CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    name: Build and test
+    runs-on: ubuntu-latest
+
+    services:
+      postgres_dev: # PostgreSQL pour timemachine_dev
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: timemachine_test
+        ports:
+          - 5432:5432
+        options: --health-cmd "pg_isready -d timemachine_test -U postgres" --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Elixir
+      uses: erlef/setup-beam@v1
+      with:
+        elixir-version: '1.15.7'
+        otp-version: '24.0' # Change OTP version if necessary
+    - name: Restore Elixir dependencies cache
+      uses: actions/cache@v2
+      with:
+        path: timemachine/_build
+        key: ${{ runner.os }}-elixir-${{ hashFiles('timemachine/mix.lock') }}
+    - name: Install Elixir dependencies
+      run: cd timemachine && mix deps.get
+    - name: Create and migrate the test database
+      run: cd timemachine && MIX_ENV=test mix ecto.migrate
+    - name: Create and migrate the database
+      run: cd timemachine && MIX_ENV=test mix ecto.create
+    - name: Run tests
+      run: cd timemachine && mix test
