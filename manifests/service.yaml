@@ -8,11 +8,7 @@ spec:
   selector:
     app: timemachineback
   ports:
-    - name: http
-      protocol: TCP
-      port: 80
-      targetPort: 4000
     - name: https
       protocol: TCP
       port: 443
-      targetPort: 4001
+      targetPort: 4000

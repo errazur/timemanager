@@ -19,9 +19,8 @@ config :timemachine, Timemachine.Repo,
 config :timemachine, TimemachineWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {0, 0, 0, 0}, port: 4000],
   https: [
-    ip: {127, 0, 0, 1},
+    ip: {0, 0, 0, 0},
     port: 4001,
     cipher_suite: :strong,
     keyfile: "priv/cert/selfsigned_key.pem",
