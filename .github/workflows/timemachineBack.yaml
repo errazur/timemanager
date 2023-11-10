@@ -1,4 +1,4 @@
-name: timemachineBack
+name: timemachineback
 on:
   workflow_run:
     workflows: ["Elixir CI"]
@@ -11,8 +11,8 @@ env:
     CLUSTER_RESOURCE_GROUP: cyrilaks
     CONTAINER_NAME: image-workflow-1699611363190
     DEPLOYMENT_MANIFEST_PATH: |
-        manifests/deploymentBack.yaml
-        manifests/serviceBack.yaml
+        manifests/deploymentback.yaml
+        manifests/serviceback.yaml
 jobs:
     buildImage:
         permissions:
