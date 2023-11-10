@@ -20,7 +20,7 @@ export default {
     },
     methods: {
         createUser() {
-            const url = 'http://localhost:4000/api/users/'; // FIXME: Changer pour network
+            const url = 'http://20.4.142.108:4000/api/users/'; // FIXME: Changer pour network
             const data = {
                 username: this.username,
                 email: this.email,
