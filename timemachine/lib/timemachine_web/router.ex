@@ -45,6 +45,9 @@ defmodule TimemachineWeb.Router do
     post "/clocks/:user_id", ClockController, :create
 
     # WORKING TIMES
+    get "/workingtimes/teams/:team_id", WorkingtimeController, :get_by_team
+    post "/workingtimes/teams/:team_id", WorkingtimeController, :create_for_team
+
     get "/workingtimes/:user_id", WorkingtimeController, :index
     get "/workingtimes/:user_id/:id", WorkingtimeController, :show
     post "/workingtimes/:user_id", WorkingtimeController, :create
