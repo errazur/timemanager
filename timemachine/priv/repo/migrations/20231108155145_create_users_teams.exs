@@ -8,5 +8,6 @@ defmodule Timemachine.Repo.Migrations.CreateUsersTeams do
 
       timestamps(type: :utc_datetime)
     end
+    create unique_index(:users_teams, [:user_id, :team_id])
   end
 end

@@ -59,8 +59,8 @@ defmodule TimemachineWeb.Router do
     delete "/teams/:id", TeamController, :delete
 
     # USERS_TEAMS
-    post "users/:user_id/teams/:team_id", UserTeamController, :add
-    delete "users/:user_id/teams/:team_id", UserTeamController, :remove
+    post "/users/:user_id/teams/:team_id", UserTeamController, :add
+    delete "/users/:user_id/teams/:team_id", UserTeamController, :remove
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
