@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timemanagerfront
+  labels:
+    app: timemanagerfront
+  namespace: namespace-workflow-1699610868765
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: timemanagerfront
+  template:
+    metadata:
+      labels:
+        app: timemanagerfront
+    spec:
+      containers:
+        - name: timemanagerfront
+          image: acrworkflow1699610868765.azurecr.io/image-workflow-1699610868765:latest
+          ports:
+            - containerPort: 5173
