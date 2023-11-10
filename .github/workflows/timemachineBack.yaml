@@ -1,9 +1,9 @@
 name: timemachineBack
-"on":
-    push:
-        branches:
-            - main
-    workflow_dispatch: {}
+on:
+  workflow_run:
+    workflows: ["Elixir CI"]
+    types:
+      - completed
 env:
     ACR_RESOURCE_GROUP: cyrilaks
     AZURE_CONTAINER_REGISTRY: acrworkflow1699611363190
@@ -11,8 +11,8 @@ env:
     CLUSTER_RESOURCE_GROUP: cyrilaks
     CONTAINER_NAME: image-workflow-1699611363190
     DEPLOYMENT_MANIFEST_PATH: |
-        manifests/deployment.yaml
-        manifests/service.yaml
+        manifests/deploymentBack.yaml
+        manifests/serviceBack.yaml
 jobs:
     buildImage:
         permissions:
@@ -28,7 +28,7 @@ jobs:
                 subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
                 tenant-id: ${{ secrets.AZURE_TENANT_ID }}
             - name: Build and push image to ACR
-              run: az acr build --image ${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f Dockerfile ./timemachine
+              run: az acr build --image ${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ./timemachine/Dockerfile ./timemachine
     deploy:
         permissions:
             actions: read
