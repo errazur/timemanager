@@ -24,7 +24,7 @@ class NetworkManager {
         this.status = status;
 
         console.log(status);
-        
+
         // await Dialog.alert({
         //     title: 'Changement de connection',
         //     message: JSON.stringify(status),
@@ -63,7 +63,7 @@ class NetworkManager {
             // exec request if online
             return fetch(this.api + uri, {
                 method: method,
-                credentials: 'include',
+                //credentials: 'include',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
