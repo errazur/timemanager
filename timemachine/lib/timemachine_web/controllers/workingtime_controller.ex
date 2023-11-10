@@ -50,4 +50,29 @@ defmodule TimemachineWeb.WorkingtimeController do
     end
   end
 
+  def get_by_team(conn, params) do
+    team_id = Map.get(params, "team_id")
+    team_id = String.to_integer(team_id)
+    start_time = Map.get(params, "start")
+    end_time = Map.get(params, "end")
+
+    team = Accounts.get_team!(team_id)
+
+    workingtimes = List.flatten(
+      for(user <- team.users, do: Accounts.search_workingtimes(user.id, start_time, end_time))
+    )
+
+    render(conn, :index, workingtimes: workingtimes)
+  end
+
+  def create_for_team(conn, %{"team_id" => team_id, "workingtime" => workingtime_params}) do
+    team_id = String.to_integer(team_id)
+
+    team = Accounts.get_team!(team_id)
+
+    for(user <- team.users, do: Accounts.create_workingtime(workingtime_params, user.id))
+
+    send_resp(conn, :no_content, "")
+  end
+
 end
