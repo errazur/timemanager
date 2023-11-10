@@ -1,15 +1,15 @@
-name: timemanageraks
+name: timemachineBack
 on:
   workflow_run:
     workflows: ["Elixir CI"]
     types:
       - completed
 env:
-    ACR_RESOURCE_GROUP: Epitech
-    AZURE_CONTAINER_REGISTRY: epitech
+    ACR_RESOURCE_GROUP: cyrilaks
+    AZURE_CONTAINER_REGISTRY: acrworkflow1699611363190
     CLUSTER_NAME: cyrilaks
     CLUSTER_RESOURCE_GROUP: cyrilaks
-    CONTAINER_NAME: image-workflow-1699536823239
+    CONTAINER_NAME: image-workflow-1699611363190
     DEPLOYMENT_MANIFEST_PATH: |
         manifests/deploymentBack.yaml
         manifests/serviceBack.yaml
@@ -62,4 +62,4 @@ jobs:
                 action: deploy
                 images: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
                 manifests: ${{ env.DEPLOYMENT_MANIFEST_PATH }}
-                namespace: namespace-workflow-1699536823239
+                namespace: namespace-workflow-1699611363190
