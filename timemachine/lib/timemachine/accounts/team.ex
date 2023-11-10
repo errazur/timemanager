@@ -17,5 +17,6 @@ defmodule Timemachine.Accounts.Team do
     |> cast(attrs, [:name])
     |> validate_required([:name])
     |> unique_constraint(:name)
+    |> cast_assoc(:users)
   end
 end

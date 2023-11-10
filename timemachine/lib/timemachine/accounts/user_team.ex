@@ -9,12 +9,13 @@ defmodule Timemachine.Accounts.UserTeam do
     timestamps(type: :utc_datetime)
   end
 
-  @unique_constraint {:user_id, :team_id}
-
   @doc false
   def changeset(struct, attrs) do
     struct
     |> cast(attrs, [:user_id, :team_id])
     |> validate_required([:user_id, :team_id])
+    |> unique_constraint([:user_id, :team_id])
+    |> cast_assoc(:user)
+    |> cast_assoc(:team)
   end
 end

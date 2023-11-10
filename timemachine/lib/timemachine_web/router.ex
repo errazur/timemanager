@@ -41,10 +41,16 @@ defmodule TimemachineWeb.Router do
     delete "/users/:id", UserController, :delete
 
     # CLOCKS
+    get "/clocks/teams/:team_id", ClockController, :get_by_team
+    post "/clocks/teams/:team_id", ClockController, :create_for_team
+
     get "/clocks/:user_id", ClockController, :index
     post "/clocks/:user_id", ClockController, :create
 
     # WORKING TIMES
+    get "/workingtimes/teams/:team_id", WorkingtimeController, :get_by_team
+    post "/workingtimes/teams/:team_id", WorkingtimeController, :create_for_team
+
     get "/workingtimes/:user_id", WorkingtimeController, :index
     get "/workingtimes/:user_id/:id", WorkingtimeController, :show
     post "/workingtimes/:user_id", WorkingtimeController, :create
@@ -59,8 +65,8 @@ defmodule TimemachineWeb.Router do
     delete "/teams/:id", TeamController, :delete
 
     # USERS_TEAMS
-    post "users/:user_id/teams/:team_id", UserTeamController, :add
-    delete "users/:user_id/teams/:team_id", UserTeamController, :remove
+    post "/users/:user_id/teams/:team_id", UserTeamController, :add
+    delete "/users/:user_id/teams/:team_id", UserTeamController, :remove
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

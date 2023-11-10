@@ -23,6 +23,7 @@ defmodule Timemachine.Accounts.User do
     |> validate_format(:email, ~r/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i, message: "Le format de l'email est invalide")
     |> unique_constraint(:username)
     |> unique_constraint(:email)
+    |> cast_assoc(:teams)
   end
 
   def clean(attrs) do
