@@ -69,7 +69,7 @@ export default {
 </script>
 
 <template>
-  <div class="container m-auto px-6 md:px-0 pb-[96px] sm:pb-0 pt-6 sm:pt-6">
+  <div class="container m-auto px-6 md:px-0 pb-[96px] sm:pb-0 pt-16 sm:pt-6">
     <p class="font-medium text-2xl mb-6">Hello {{ user.username }}</p>
     <div class="dashboard grid grid-cols-2 sm:grid-cols-3 grid-rows-3 sm:grid-rows-[1fr,auto] w-full gap-[20px] h-auto sm:h-[75vh]">
       <div class="shadow-md rounded-3xl col-span-full sm:col-span-2 p-4 bg-white flex flex-col">

@@ -3,6 +3,7 @@ import {createStore} from "vuex";
 import App from "@/App.vue";
 import moment, {min} from "moment/moment";
 import { auth } from "./auth.module";
+import network from '../tools/NetworkManager';
 const store = createStore(
     {
         modules: {
@@ -33,7 +34,25 @@ const store = createStore(
                 plannedNightHours: 0,
                 workingTimesByUser: [],
                 maxHour: 0,
-                minHour: 24
+                minHour: 24,
+                management: {
+                    teamSelected: "",
+                    normHoursPerDay: 7,
+                    teams: [
+                        {
+                            id: 1,
+                            members: ['user1', 'user2', 'user3', 'toto', 'super', 'admin', 'user7', 'test'],
+                        },
+                        {
+                            id: 2,
+                            members: ['user4', 'user5', 'user6', 'test1', 'johndoe'],
+                        },
+                        {
+                            id: 3,
+                            members: ['user7', 'user8', 'user9'],
+                        }
+                    ]
+                },
             }
         },
         getters: {
@@ -81,6 +100,15 @@ const store = createStore(
             getMinHour(state){
               console.log(state.minHour)
               return state.minHour
+            },
+            getTeamSelectedManager (state){
+              return state.management.teamSelected
+            },
+            getNormHoursPerDay (state){
+              return state.management.normHoursPerDay
+            },
+            getTeamsManager (state){
+              return state.management.teams
             }
         },
         mutations: {
@@ -222,8 +250,6 @@ const store = createStore(
             },
             //Overtimes
             setOvertimeHoursPerMonth(state) {
-                const normHoursPerDay = 7; // Norme de travail en heures par jour
-
                 const hoursWorkedData = state.chartData.datasets[0].data;
                 const labels = state.chartData.labels;
                 let numberOfDaysPerMonth = [];
@@ -232,9 +258,8 @@ const store = createStore(
                 labels.map((lab) => {
                     numberOfDaysPerMonth.push(moment(lab, "MMMM YYYY").daysInMonth());
                 })
-
                 const overtimeHours = hoursWorkedData.map((hours, index) => {
-                    const normalHoursInMonth = numberOfDaysPerMonth[index] * normHoursPerDay;
+                    const normalHoursInMonth = numberOfDaysPerMonth[index] * state.management.normHoursPerDay;
                     const overtime = hours - normalHoursInMonth;
 
                     return overtime < 0 ? 0 : overtime; // Les heures supplémentaires ne sont pas négatives
@@ -247,8 +272,6 @@ const store = createStore(
                 };
             },
             setOvertimeHoursPerYear(state) {
-                const normHoursPerDay = 7; // Norme de travail en heures par jour
-
                 const hoursWorkedData = state.chartData.datasets[0].data;
                 const labels = state.chartData.labels;
                 let overtimeHoursPerYear = {};
@@ -256,8 +279,7 @@ const store = createStore(
                 // Pour chaque mois, calculer les heures supplémentaires
                 labels.forEach((month, index) => {
                     const year = month.split(" ")[1]; // Obtenir l'année du libellé du mois
-                    const normalHoursInMonth = moment(month, "MMMM YYYY").daysInMonth() * normHoursPerDay;
-
+                    const normalHoursInMonth = moment(month, "MMMM YYYY").daysInMonth() * state.management.normHoursPerDay;
                     if (!overtimeHoursPerYear[year]) {
                         overtimeHoursPerYear[year] = 0;
                     }
@@ -265,10 +287,12 @@ const store = createStore(
                     const overtime = hoursWorkedData[index] - normalHoursInMonth;
                     overtimeHoursPerYear[year] += overtime < 0 ? 0 : overtime; // Les heures supplémentaires ne sont pas négatives
                 });
+
                 const dateNow = Date.now();
                 const nowDate = new Date(dateNow);
                 const currentYear = nowDate.getFullYear();
                 state.hoursOfRTT = Math.floor(overtimeHoursPerYear[`${currentYear}`])
+                console.log("ici", overtimeHoursPerYear['2023']);
                 state.chartOvertimeData = {
                     labels: Object.keys(overtimeHoursPerYear),
                     datasets: [{
@@ -368,19 +392,23 @@ const store = createStore(
                         return total + workingTime;
                     }, 0);
             },
+
+            //Manager
+            setTeamSelected(state, select){
+                state.management.teamSelected = select
+            },
+            setNormHoursPerDay(state, hour){
+                state.management.normHoursPerDay = hour
+            },
+            setTeamMembers (state, teams){
+                state.management.teams = teams
+            }
         },
         actions: {
             async getData(context) {
                 try {
                     const userId = context.rootState.auth.user.id;
-                    const token = localStorage.getItem('token');
-                    const response = await fetch(`http://localhost:4000/api/workingtimes/${userId}`, {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
-                        },
-                    });
+                    const response = await network.get(`/api/workingtimes/${userId}`);
                     const workingTimesData = await response.json();
                     console.log("request : ",workingTimesData)
                     context.commit('setData', workingTimesData.data);
@@ -394,6 +422,17 @@ const store = createStore(
                     context.commit('setChartNightHours')
                 } catch (error) {
                     console.error(error);
+                }
+            },
+            async managerData(context){
+                try {
+                    // const userId = context.rootState.auth.user.id;
+                    const response = await network.get(`/api/teams/`);
+                    const data = await response.json();
+                    console.log("req", data);
+                }
+                catch (e) {
+                    console.log(e);
                 }
             }
         }

@@ -6,6 +6,7 @@ import ChartManager from "../components/ChartManager.vue";
 import Clock from "../components/Clock.vue";
 import WorkingTime from "../components/WorkingTime.vue";
 import WorkingTimes from "../components/WorkingTimes.vue";
+import ManagerPage from "@/components/ManagerPage.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,6 +40,12 @@ const router = createRouter({
       component: ChartManager,
       props: true,
     },
+    {
+      path: "/manager/:userId",
+      name: "managerPage",
+      component: ManagerPage,
+      props: true
+    }
   ],
 });
 

@@ -65,40 +65,34 @@ export default {
             this.currentTimeDay = new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })
         },
 
-        async clock() {
-            const url = `http://localhost:4000/api/clocks/${this.user.id}`;
-            const token = localStorage.getItem('token');
+        async clock() { // Test sans passer par le network 
+            const url = `/api/clocks/${this.user.id}`;
             const data = {
                 clock: {
                     status: this.clockIn,
                     time: new Date().toISOString()
-                }
+                },
+                _csrf_token: this.$store.getters['auth/csrfToken']
             };
-            const response = await fetch(url, {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            const result = await response.json()
+            try {
+                const response = await this.$network.post(url, data);
+                const result = await response.json();
+            } catch (error) {
+                console.error(error);
+            }
         },
         async refresh() {
-            const url = `http://localhost:4000/api/clocks/${this.user.id}`;
-            const token = localStorage.getItem('token');
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+            const url = `/api/clocks/${this.user.id}`;
+            try {
+                const response = await this.$network.get(url);
+                const result = await response.json();
+                if (result.data.length > 0) {
+                    const lastClock = result.data[result.data.length - 1];
+                    this.clockIn = lastClock.status;
+                    this.updateStartedTime(lastClock.time);
                 }
-            })
-            const result = await response.json()
-            if (result.data.length > 0) {
-                const lastClock = result.data[result.data.length - 1]
-                this.clockIn = lastClock.status
-                this.updateStartedTime(lastClock.time)
+            } catch (error) {
+                console.error(error);
             }
         }
     },

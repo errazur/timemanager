@@ -26,9 +26,12 @@
                                 <p>Working Times</p>
                             </div>
                         </router-link></li>
-                    <li class="hidden sm:list-item"><router-link :to="'/chartManager/' + user.id">
+                    <li class="sm:mr-10 md:mr-16 lg:mr-24 hidden sm:list-item"><router-link :to="'/chartManager/' + user.id">
                             <p>Chart Manager</p>
                         </router-link></li>
+                  <li class="hidden sm:list-item">
+                    <router-link :to="'/manager/' + user.id"><p>Manager page</p></router-link>
+                  </li>
                     <li @click="userDetails = !userDetails">
                         <div class="flex flex-col items-center">
                             <div class="bg-white border-2 sm:border-0 rounded-full p-1.5 inline-flex items-center justify-center sm:absolute sm:right-16 md:right-20 lg:right-28 sm:-translate-y-6"
@@ -38,6 +41,9 @@
                             </div>
                             <p class="sm:hidden">Profil</p>
                         </div>
+                    </li>
+                    <li @click="setToken">
+                        <p>Set Token</p>
                     </li>
                 </ul>
             </nav>
@@ -49,12 +55,13 @@
         </router-link>
     </header>
     <div v-if="userDetails" @click.self="userDetails = false" class="flex flex-col justify-end sm:flex-row fixed w-full h-screen bg-black bg-opacity-50 z-20">
-        <ProfileManagmentUser @cancel="userDetails = false" />
+        <ProfileManagmentUser @details="userDetails = false" />
     </div>
-    <router-view :userData="user" :class="{ 'sm:mt-28': this.$route.name !== 'login'}"></router-view>
+    <router-view :class="{ 'sm:mt-28 sm:mb-10': this.$route.name !== 'login'}"></router-view>
 </template>
 
 <script>
+import { jwtDecode } from 'jwt-decode';
 import { RouterLink, RouterView } from 'vue-router';
 import ProfileManagmentUser from '../components/ProfileManagmentUser.vue';
 
@@ -76,11 +83,47 @@ export default {
     },
     computed: {
         user() {
-            return this.$store.getters['auth/user'] || {
-                id: 0,
-                username: 'Guest',
-                email: 'guest@example.com'
-            };
+            return this.$store.getters['auth/user'];
+        }
+    },
+    mounted() {
+        this.$network.get('/api/tokens')
+            .then(response => response.json())
+            .then(data => {
+                localStorage.setItem('token', data.bearer);
+
+                const user = jwtDecode(data.bearer).user;
+                this.$store.commit('auth/loginSuccess', user);
+
+                const csrfToken = data._csrf_token;
+                this.$store.commit('auth/setCsrfToken', csrfToken);
+
+                console.log('JWT ' + localStorage.getItem('token'));
+                console.log('X-CSRF-TOKEN ' + this.$store.getters['auth/csrfToken']);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    },
+    methods: {
+        setToken() {
+            this.$network.get('/api/tokens')
+                .then(response => response.json())
+                .then(data => {
+                    localStorage.setItem('token', data.bearer);
+
+                    const user = jwtDecode(data.bearer).user;
+                    this.$store.commit('auth/loginSuccess', user);
+
+                    const csrfToken = data._csrf_token;
+                    this.$store.commit('auth/setCsrfToken', csrfToken);
+
+                    console.log('JWT ' + localStorage.getItem('token'));
+                    console.log('X-CSRF-TOKEN ' + this.$store.getters['auth/csrfToken']);
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
         }
     },
     components: {

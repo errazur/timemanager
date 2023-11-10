@@ -44,16 +44,16 @@ export default {
                     password: this.password //TODO: Chiffrer le mot de passe
                 }
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     localStorage.setItem('token', data.bearer);
+
                     const user = jwtDecode(data.bearer).user;
                     this.$store.commit('auth/loginSuccess', user);
+
+                    const csrfToken = data._csrf_token;
+                    this.$store.commit('auth/setCsrfToken', csrfToken);
+
                     this.$router.push('/');
                 })
                 .catch(error => {

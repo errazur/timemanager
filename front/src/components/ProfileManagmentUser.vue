@@ -63,22 +63,15 @@
                 this.$nextTick(() => this.$refs.usernameInput.focus());
             },
             cancel() {
-                this.$emit('cancel');
+                this.$emit('details');
             },
             async updateUser() {
                 const updatedUser = { "user": this.updatedUser };
                 try {
-                    const response = await fetch("http://localhost:4000/api/users/" + this.user.id, {
-                        method: "PUT",
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                            'Authorization': 'Bearer ' + localStorage.getItem('token')
-                        },
-                        body: JSON.stringify(updatedUser)
-                    });
+                    const response = await this.$network.put("/api/users/" + this.user.id, updatedUser);
                     const updated = await response.json();
                     this.$store.commit('auth/loginSuccess', updated.data);
+                    this.$emit('details');
                 }
                 catch (error) {
                     console.log("error :", error)
@@ -86,13 +79,9 @@
             },
             async deleteUser() {
                 try {
-                    const response = await fetch("http://localhost:4000/api/users/" + this.user.id, {
-                        method: "DELETE",
-                        headers: {
-                            'Autorization': 'Bearer ' + localStorage.getItem('token'),
-                        }
-                    });
+                    const response = await this.$network.delete("/api/users/" + this.user.id);
                     const deleted = await response.json();
+                    this.$emit('details');
                     this.disconnect();
                 }
                 catch (error) {
@@ -101,6 +90,7 @@
             },
             disconnect() {
                 this.$store.commit('auth/logout');
+                this.$emit('details');
                 this.$router.push('/login');
             }
         },

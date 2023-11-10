@@ -17,5 +17,7 @@ module.exports = {
       sans: ["Gotham", "sans-serif"],
     },
   },
-  plugins: [],
+  plugins: [
+    require('autoprefixer'),
+  ],
 };
