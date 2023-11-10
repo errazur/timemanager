@@ -54,9 +54,9 @@
       <div class="flex justify-between gap-6">
         <div class="w-1/2 form-add-worktime rounded shadow-md p-6">
           <h2 class="text-3xl mb-4 font-medium">Create a working time for the team</h2>
-          <p class="mb-2">Start : <input class="ml-2 px-3 py-1 border rounded" type="datetime-local"></p>
-          <p class="mb-2">End : <input class="ml-2 px-3 py-1 border rounded" type="datetime-local"></p>
-          <button class="rounded bg-white p-2 mt-2 mb-8">Create a working time</button>
+          <p class="mb-2">Start : <input class="ml-2 px-3 py-1 border rounded" type="datetime-local" v-model="newWorkingTimeTeam.start"></p>
+          <p class="mb-2">End : <input class="ml-2 px-3 py-1 border rounded" type="datetime-local" v-model="newWorkingTimeTeam.end"></p>
+          <button class="rounded bg-white p-2 mt-2 mb-8" @click="createWorkingTimeTeam">Create a working time</button>
           <p>Norm hours per day : <input type="number" v-model="normHoursData"></p>
           <p>Limit of night hours per day : <input type="number" v-model="limitHoursData"></p>
         </div>
@@ -78,7 +78,7 @@
             :time-to="19 * 60"
             :time-step="30"
             hide-weekends
-            :events="filteredData">
+            :events="dataTable">
         </vue-cal>
       </div>
     </div>
@@ -182,7 +182,7 @@ export default {
       return this.getLimitHours
     },
     handleTeamSelect() {
-
+      this.getWorkingTimeByTeam();
       const selectedTeam = this.teams.find((team) => team.id === this.teamSelected);
       if (selectedTeam) {
         this.membersList = selectedTeam.users;
@@ -225,8 +225,12 @@ export default {
       try{
         const response  = await this.$network.get(`/api/workingtimes/teams/${this.teamSelected}`);
         const data =  await response.json();
-        console.log(data)
-        this.dataTable = data.data
+        this.dataTable = data.data.map(workingtime => ({
+          start: new Date(workingtime.start),
+          end: new Date(workingtime.end),
+        }));
+
+        console.log("working time by team", this.dataTable)
       }
       catch(e){
         console.log(e)
@@ -266,6 +270,7 @@ export default {
       }
     },
     async createWorkingTimeTeam(){
+      console.log(this.newWorkingTimeTeam)
       try {
         const body = {
           workingtime: {
@@ -281,6 +286,7 @@ export default {
       }
     },
     async createClockTeam(){
+      this.clockIn = !this.clockIn
       try {
         const body = {
           clock: {
@@ -290,8 +296,7 @@ export default {
         }
         const response = await this.$network.post(`/api/clocks/teams/${this.teamSelected}`, body);
         console.log(response)
-
-        this.clockIn != this.clockIn
+        console.log(this.clockIn)
       }
       catch(e){
         console.log(e)
@@ -304,7 +309,6 @@ export default {
     store.commit('setTeamSelected', this.teamSelected);
     // this.createTeam();
     this.getTeams();
-    this.getWorkingTimeByTeam();
     this.getUsers();
     // this.addUserToTeam()
     // console.log("teams : ",toRaw(this.teams).data.map((e) => console.log(e.id)))
