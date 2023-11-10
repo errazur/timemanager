@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: timemachineBack
+  namespace: namespace-workflow-1699611363190
+spec:
+  type: LoadBalancer
+  selector:
+    app: timemachineBack
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 4000
