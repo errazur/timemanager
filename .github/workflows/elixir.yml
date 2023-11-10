@@ -43,6 +43,6 @@ jobs:
     - name: Create and migrate the test database
       run: cd timemachine && MIX_ENV=test mix ecto.create
     - name: Create and migrate the database
-      run: cd timemachine && MIX_ENV=test mix ecto.migrate
+      run: cd timemachine && MIX_ENV=test mix ecto.reset
     - name: Run tests
       run: cd timemachine && mix test
