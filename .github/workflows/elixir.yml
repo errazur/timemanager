@@ -32,7 +32,7 @@ jobs:
       uses: erlef/setup-beam@v1
       with:
         elixir-version: '1.15.7'
-        otp-version: '24.0' # Change OTP version if necessary
+        otp-version: '26.0' # Change OTP version if necessary
     - name: Restore Elixir dependencies cache
       uses: actions/cache@v2
       with:
