@@ -1,6 +1,7 @@
 import StorageHelper from "./StorageHelper";
 import { Network } from '@capacitor/network';
 import { Dialog } from '@capacitor/dialog';
+import store from "../store";
 
 const storedReqs = 'requests';
 
@@ -55,19 +56,19 @@ class NetworkManager {
             if (!this.status.connected) {
                 /** @type {array} */
                 const requests = this.storage.get(storedReqs) || []
-                this.storage.set(storedReqs, requests
-                    .filter(req => req.method !== method && req.uri !== uri)
-                    .push({ method, uri, body })
-                )
+                requests.push({ method, uri, body });
+                this.storage.set(storedReqs, requests.filter(req => req.method !== method && req.uri !== uri));
                 return
             }
             // exec request if online
             return fetch(this.api + uri, {
                 method: method,
+                credentials: 'include',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('token') || ''
+                    'Authorization': 'Bearer ' + localStorage.getItem('token') || '',
+                    'x-csrf-token': store.getters['auth/csrfToken']
                 },
                 body: body instanceof Object ? JSON.stringify(body) : body
             })

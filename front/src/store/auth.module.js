@@ -1,6 +1,9 @@
 import { jwtDecode } from "jwt-decode";
 
-let user = null;
+let user = {
+  id: 0,
+  username: 'Not Connected',
+};
 const token = localStorage.getItem("token");
 
 if (token && typeof token === "string") {
@@ -19,8 +22,8 @@ if (token && typeof token === "string") {
 }
 
 const initialState = user
-  ? { status: { loggedIn: true }, user }
-  : { status: { loggedIn: false }, user: null };
+  ? { status: { loggedIn: true }, user, csrfToken: null }
+  : { status: { loggedIn: false }, user: { id: 0, username: 'Not Connected' }, csrfToken: null };
 
 export const auth = {
   namespaced: true,
@@ -31,6 +34,9 @@ export const auth = {
     },
     loggedIn(state) {
       return state.status.loggedIn;
+    },
+    csrfToken(state) {
+      return state.csrfToken;
     },
   },
   mutations: {
@@ -45,7 +51,11 @@ export const auth = {
     logout(state) {
       state.status.loggedIn = false;
       state.user = null;
+      state.csrfToken = null;
       localStorage.removeItem("token");
+    },
+    setCsrfToken(state, token) {
+      state.csrfToken = token;
     },
   },
 };
