@@ -37,35 +37,28 @@ export default {
     },
     methods: {
         getUser() {
-            const url = 'http://localhost:4000/api/login';
-            const data = {
+            const url = '/api/login';
+            this.$network.post(url, {
                 credentials: {
                     username: this.username,
                     password: this.password //TODO: Chiffrer le mot de passe
                 }
-            };
-            fetch(url, {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                localStorage.setItem('token', data.bearer);
-                const user = jwtDecode(data.bearer).user;
-                this.$store.commit('auth/loginSuccess', user);
-                this.$router.push('/');
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    localStorage.setItem('token', data.bearer);
+                    const user = jwtDecode(data.bearer).user;
+                    this.$store.commit('auth/loginSuccess', user);
+                    this.$router.push('/');
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
         }
     }
 }
