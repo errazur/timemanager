@@ -65,7 +65,7 @@ defmodule TimemachineWeb.WorkingtimeController do
     render(conn, :index, workingtimes: workingtimes)
   end
 
-  def create_for_team(conn, %{ "team_id" => team_id, "workingtime" => workingtime_params}) do
+  def create_for_team(conn, %{"team_id" => team_id, "workingtime" => workingtime_params}) do
     team_id = String.to_integer(team_id)
 
     team = Accounts.get_team!(team_id)

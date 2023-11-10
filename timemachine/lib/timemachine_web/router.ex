@@ -41,6 +41,9 @@ defmodule TimemachineWeb.Router do
     delete "/users/:id", UserController, :delete
 
     # CLOCKS
+    get "/clocks/teams/:team_id", ClockController, :get_by_team
+    post "/clocks/teams/:team_id", ClockController, :create_for_team
+
     get "/clocks/:user_id", ClockController, :index
     post "/clocks/:user_id", ClockController, :create
 
