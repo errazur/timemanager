@@ -12,12 +12,11 @@ defmodule TimemachineWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    plug :fetch_session
   end
 
   pipeline :auth do
     plug TimemachineWeb.Plugs.ValidateBearer
-    plug :protect_from_forgery # Nota Bene: No CSRF protection on GET requests
+    plug TimemachineWeb.Plugs.ValidateCSRF
   end
 
   # PUBLIC ROUTES
@@ -51,6 +50,17 @@ defmodule TimemachineWeb.Router do
     post "/workingtimes/:user_id", WorkingtimeController, :create
     put "/workingtimes/:id", WorkingtimeController, :update
     delete "/workingtimes/:id", WorkingtimeController, :delete
+
+    # TEAMS
+    get "/teams", TeamController, :index
+    get "/teams/:id", TeamController, :show
+    post "/teams", TeamController, :create
+    put "/teams/:id", TeamController, :update
+    delete "/teams/:id", TeamController, :delete
+
+    # USERS_TEAMS
+    post "users/:user_id/teams/:team_id", UserTeamController, :add
+    delete "users/:user_id/teams/:team_id", UserTeamController, :remove
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

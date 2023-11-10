@@ -8,6 +8,7 @@ defmodule Timemachine.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      Timemachine.Tokens.CSRF,
       TimemachineWeb.Telemetry,
       Timemachine.Repo,
       {DNSCluster, query: Application.get_env(:timemachine, :dns_cluster_query) || :ignore},

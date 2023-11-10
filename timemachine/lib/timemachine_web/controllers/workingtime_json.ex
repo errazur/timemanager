@@ -21,7 +21,7 @@ defmodule TimemachineWeb.WorkingtimeJSON do
       start: workingtime.start,
       end: workingtime.end,
       user_id: workingtime.user_id,
-      user: TimemachineWeb.UserJSON.data(workingtime.user)
+      user: TimemachineWeb.UserJSON.data_no_teams(workingtime.user)
     }
   end
 end

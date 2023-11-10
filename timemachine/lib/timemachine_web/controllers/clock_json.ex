@@ -21,7 +21,7 @@ defmodule TimemachineWeb.ClockJSON do
       time: clock.time,
       status: clock.status,
       user_id: clock.user_id,
-      user: TimemachineWeb.UserJSON.data(clock.user)
+      user: TimemachineWeb.UserJSON.data_no_teams(clock.user)
     }
   end
 end

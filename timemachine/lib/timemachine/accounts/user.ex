@@ -9,6 +9,9 @@ defmodule Timemachine.Accounts.User do
     field :email, :string
     field :password_hash, :binary
 
+    many_to_many :teams, Timemachine.Accounts.Team,
+      join_through: Timemachine.Accounts.UserTeam
+
     timestamps(type: :utc_datetime)
   end
 
@@ -18,6 +21,8 @@ defmodule Timemachine.Accounts.User do
     |> cast(clean(attrs), [:username, :email, :password_hash])
     |> validate_required([:username, :email, :password_hash])
     |> validate_format(:email, ~r/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i, message: "Le format de l'email est invalide")
+    |> unique_constraint(:username)
+    |> unique_constraint(:email)
   end
 
   def clean(attrs) do

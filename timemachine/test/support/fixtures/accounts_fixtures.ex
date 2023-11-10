@@ -50,4 +50,18 @@ defmodule Timemachine.AccountsFixtures do
     {:ok, workingtime} = Timemachine.Accounts.create_workingtime(attrs, user.id)
     workingtime
   end
+
+  @doc """
+  Generate a team.
+  """
+  def team_fixture(attrs \\ %{}) do
+    {:ok, team} =
+      attrs
+      |> Enum.into(%{
+        name: "some name"
+      })
+      |> Timemachine.Accounts.create_team()
+
+    team
+  end
 end
