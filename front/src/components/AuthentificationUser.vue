@@ -38,13 +38,12 @@ export default {
     methods: {
         getUser() {
             const url = '/api/login';
-            const data = {
+            this.$network.post(url, {
                 credentials: {
                     username: this.username,
                     password: this.password //TODO: Chiffrer le mot de passe
                 }
-            };
-            this.$network.post(url, data)
+            })
                 .then(response => response.json())
                 .then(data => {
                     localStorage.setItem('token', data.bearer);

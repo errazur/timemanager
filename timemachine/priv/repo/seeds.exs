@@ -14,3 +14,6 @@ Timemachine.Accounts.create_user(%{
   "email" => "admin@macron-demission.org",
   "password" => "explosion"
 })
+Timemachine.Accounts.create_team(%{
+  "name" => "Gouvernement",
+})
