@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: timemachinefront
+  namespace: namespace-workflow-1699632488803
+spec:
+  type: LoadBalancer
+  selector:
+    app: timemachinefront
+  ports:
+    - protocol: TCP
+      port: 5173
+      targetPort: 5173
