@@ -9,7 +9,7 @@ EXPOSE 8080
 EXPOSE 3000
 EXPOSE 987
 EXPOSE 4000
-# EXPOSE 4001
+EXPOSE 4001
 EXPOSE 5432
 # Mettre à jour et installer inotify-tools
 RUN apt-get update -y && apt-get install -y inotify-tools
