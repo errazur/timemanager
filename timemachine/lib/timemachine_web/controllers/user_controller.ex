@@ -43,11 +43,28 @@ defmodule TimemachineWeb.UserController do
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Accounts.get_user!(id)
 
+    # Never update password with this route
+    user_params = Map.delete(user_params, "password")
+
     with {:ok, %User{} = user} <- Accounts.update_user(user, user_params) do
       if user.id == Bearer.get_current_user_id(conn) do
         send_tokens(conn, user)
       else
         render(conn, :show, user: user)
+      end
+    end
+  end
+
+  def update_password(conn, %{"id" => id, "password" => password, "new_password" => new_password}) do
+    # Verify old password matches
+    with {:ok, %User{} = user} <- Accounts.try_login(id, password) do
+      # Make sure the request is from the target user
+      if user.id != Bearer.get_current_user_id(conn) do
+        {:error, 403}
+      else
+        with {:ok, %User{} = user} <- Accounts.update_user(user, %{"password" => new_password}) do
+          send_tokens(conn, user)
+        end
       end
     end
   end

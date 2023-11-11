@@ -42,6 +42,18 @@ defmodule Timemachine.Accounts do
     end
   end
 
+  def try_login(user_id, password) do
+    case get_user!(user_id) do
+      nil -> {:error, 401}
+      user ->
+        if :crypto.hash_equals(user.password_hash, :crypto.hash(:sha256, password)) do
+          {:ok, user}
+        else
+          {:error, 401}
+        end
+    end
+  end
+
   def create_user(attrs \\ %{}) do
     %User{role: User.default_role()}
     |> Repo.preload(:teams)
