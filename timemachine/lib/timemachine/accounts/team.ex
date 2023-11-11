@@ -3,6 +3,7 @@ defmodule Timemachine.Accounts.Team do
   import Ecto.Changeset
 
   schema "teams" do
+    # UNIQUE
     field :name, :string
 
     many_to_many :users, Timemachine.Accounts.User,
