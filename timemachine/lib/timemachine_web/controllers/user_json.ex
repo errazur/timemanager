@@ -22,6 +22,7 @@ defmodule TimemachineWeb.UserJSON do
       id: user.id,
       username: user.username,
       email: user.email,
+      role: user.role,
       teams: for(team <- user.teams, do: TimemachineWeb.TeamJSON.data_no_users(team))
     }
   end
@@ -31,7 +32,8 @@ defmodule TimemachineWeb.UserJSON do
     %{
       id: user.id,
       username: user.username,
-      email: user.email
+      email: user.email,
+      role: user.role,
     }
   end
 end

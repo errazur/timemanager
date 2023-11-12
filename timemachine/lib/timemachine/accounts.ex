@@ -5,7 +5,7 @@ defmodule Timemachine.Accounts do
   alias Timemachine.Accounts.User
 
   def list_users do
-    Repo.all(User)
+    Repo.all(from u in User, order_by: :id)
     |> Repo.preload(:teams)
   end
 
@@ -15,7 +15,7 @@ defmodule Timemachine.Accounts do
   end
 
   def search_user(params) do
-    query = from u in User, preload: :teams
+    query = from u in User, order_by: :id, preload: :teams
 
     username = Map.get(params, "username")
     query = if username,
@@ -43,7 +43,7 @@ defmodule Timemachine.Accounts do
   end
 
   def create_user(attrs \\ %{}) do
-    %User{}
+    %User{role: User.default_role()}
     |> Repo.preload(:teams)
     |> User.changeset(attrs)
     |> Repo.insert()
@@ -66,7 +66,7 @@ defmodule Timemachine.Accounts do
   alias Timemachine.Accounts.Clock
 
   def get_clocks!(user_id) do
-    Repo.all(from(c in Clock, where: [user_id: ^user_id], preload: :user))
+    Repo.all(from(c in Clock, where: [user_id: ^user_id], order_by: :id, preload: :user))
   end
 
   def create_clock(attrs \\ %{}, user_id) do
@@ -92,7 +92,7 @@ defmodule Timemachine.Accounts do
   alias Timemachine.Accounts.Workingtime
 
   def list_workingtimes do
-    Repo.all(Workingtime)
+    Repo.all(from w in Workingtime, order_by: :id)
     |> Repo.preload(:user)
   end
 
@@ -102,7 +102,7 @@ defmodule Timemachine.Accounts do
   end
 
   def search_workingtimes(user_id, start_working, end_working) do
-    query = from(w in Workingtime, where: [user_id: ^user_id], preload: :user)
+    query = from(w in Workingtime, where: [user_id: ^user_id], order_by: :id, preload: :user)
 
     query = if start_working,
       do: where(query, [w], w.start >= ^start_working),
@@ -147,9 +147,8 @@ defmodule Timemachine.Accounts do
   alias Timemachine.Accounts.Team
 
   def list_teams do
-    Repo.all(Team)
+    Repo.all(from t in Team, order_by: :id)
     |> Repo.preload(:users)
-
   end
 
   def get_team!(id) do
