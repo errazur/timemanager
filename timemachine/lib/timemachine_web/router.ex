@@ -36,6 +36,8 @@ defmodule TimemachineWeb.Router do
     get "/tokens", UserController, :tokens
 
     # USERS
+    put "/users/password/:id", UserController, :update_password
+
     post "/users", UserController, :create
     put "/users/:id", UserController, :update
     delete "/users/:id", UserController, :delete
