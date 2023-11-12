@@ -1,7 +1,7 @@
 <template>
     <main>
-        <div class="container m-auto mt-10 px-6 md:px-0 mb-[96px] sm:mb-0 sm:mt-[150px]">
-            <h1 class="text-3xl mb-4 font-medium">WorkingTimes for user n°{{ user.id }}</h1>
+        <div class="container m-auto px-6 md:px-0 mb-[96px] sm:mb-0">
+            <h1 class="text-3xl mb-4 font-medium pt-8">WorkingTimes for user n°{{ user.id }}</h1>
             <vue-cal
                 :time-from="8 * 60"
                 :time-to="19 * 60"

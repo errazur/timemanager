@@ -29,7 +29,7 @@
                     <li class="sm:mr-10 md:mr-16 lg:mr-24 hidden sm:list-item"><router-link :to="'/chartManager/' + user.id">
                             <p>Chart Manager</p>
                         </router-link></li>
-                  <li class="hidden sm:list-item">
+                  <li v-if="user.role !== 'employee'" class="hidden sm:list-item">
                     <router-link :to="'/manager/' + user.id"><p>Manager page</p></router-link>
                   </li>
                     <li @click="userDetails = !userDetails">
@@ -41,9 +41,6 @@
                             </div>
                             <p class="sm:hidden">Profil</p>
                         </div>
-                    </li>
-                    <li @click="setToken">
-                        <p>Set Token</p>
                     </li>
                 </ul>
             </nav>
@@ -97,34 +94,10 @@ export default {
 
                 const csrfToken = data._csrf_token;
                 this.$store.commit('auth/setCsrfToken', csrfToken);
-
-                console.log('JWT ' + localStorage.getItem('token'));
-                console.log('X-CSRF-TOKEN ' + this.$store.getters['auth/csrfToken']);
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
             });
-    },
-    methods: {
-        setToken() {
-            this.$network.get('/api/tokens')
-                .then(response => response.json())
-                .then(data => {
-                    localStorage.setItem('token', data.bearer);
-
-                    const user = jwtDecode(data.bearer).user;
-                    this.$store.commit('auth/loginSuccess', user);
-
-                    const csrfToken = data._csrf_token;
-                    this.$store.commit('auth/setCsrfToken', csrfToken);
-
-                    console.log('JWT ' + localStorage.getItem('token'));
-                    console.log('X-CSRF-TOKEN ' + this.$store.getters['auth/csrfToken']);
-                })
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                });
-        }
     },
     components: {
         ProfileManagmentUser,

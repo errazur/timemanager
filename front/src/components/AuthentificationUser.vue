@@ -10,6 +10,9 @@
                         <h2 class="text-3xl">Hello</h2>
                         <h1 v-if="username" class="text-5xl font-semibold w-full truncate h-14">{{ username }}</h1>
                     </div>
+                    <div v-if="invalidCredentials">
+                        <p class="text-red text-sm">Not valid authentication details</p>
+                    </div>
                     <div class="grid grid-cols-3 gap-y-1 w-full">
                         <p class="col-span-1">Username:</p>
                         <input class="border rounded col-span-2" type="text" v-model="username">
@@ -32,19 +35,30 @@ export default {
     data() {
         return {
             username: '',
-            password: ''
+            password: '',
+            error: '',
+            invalidCredentials: false
         }
     },
     methods: {
         getUser() {
             const url = '/api/login';
-            this.$network.post(url, {
+            const data = {
                 credentials: {
                     username: this.username,
-                    password: this.password //TODO: Chiffrer le mot de passe
+                    password: this.password
                 }
-            })
-                .then(response => response.json())
+            };
+            this.$network.post(url, data)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else if (response.status === 401) {
+                        throw new Error('Invalid credentials');
+                    } else {
+                        throw new Error(`Error: ${response.status}`);
+                    }
+                })
                 .then(data => {
                     localStorage.setItem('token', data.bearer);
 
@@ -58,6 +72,9 @@ export default {
                 })
                 .catch(error => {
                     console.error('There was a problem with the fetch operation:', error);
+                    if (error.message === 'Invalid credentials') {
+                        this.invalidCredentials = true;
+                    }
                 });
         }
     }
