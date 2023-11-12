@@ -378,6 +378,9 @@ const store = createStore(
                         const startWork = new Date(worktime.start);
                         const endWork = new Date(worktime.end);
                         const workingTime = (endWork - startWork) / (1000 * 60 * 60); // Convertir la différence en heures
+
+                        state.minHour = 8;
+                        state.maxHour = 18.5;
                         // Update minHours if the current working hours is smaller
                         if (new Date(worktime.start).getHours() < state.minHour) {
                             state.minHour = new Date(worktime.start).getHours();

@@ -1,5 +1,6 @@
 import Dashboard from "@/components/Dashboard.vue";
 import { createRouter, createWebHistory } from "vue-router";
+import store from "../store";
 
 import AuthentificationUser from "../components/AuthentificationUser.vue";
 import ChartManager from "../components/ChartManager.vue";
@@ -51,13 +52,21 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const publicPages = ["/login"];
+  const managerPages = ["managerPage"];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = localStorage.getItem("token");
 
   if (authRequired && !loggedIn) {
     return next("/login");
+  } else if (managerPages.includes(to.name)) {
+    const user = store.getters["auth/user"];
+    if (user.role === "manager" || user.role === "admin") {
+      return next();
+    } else {
+      return next("/");
+    }
   } else {
-    next();
+    return next();
   }
 });
 

@@ -10,6 +10,7 @@
                 class="appearance-none text-center rounded text-3xl w-full"
                 type="text"
                 v-model="updatedUser.username"
+                @input="saveButtonText"
                 @blur="isEditing = false">
             <div v-else class="flex flex-row items-center">
                 <p class="text-3xl mr-2">{{ updatedUser.username }}</p>
@@ -17,35 +18,48 @@
             </div>
         </div>
         <div class="hidden sm:grid grid-cols-3 gap-y-1 items-center">
-            <p class="text-sm col-span-1 text-left">New username: </p>
+            <p class="text-sm col-span-1 text-center">Username: </p>
             <input
                 class="border border-gray-500 text-left rounded text-xl w-full col-span-2"
                 type="text"
+                @input="saveButtonText"
                 v-model="updatedUser.username">
         </div>
         <div class="mt-4 sm:mt-2 grid grid-cols-3 gap-y-1">
-            <p class="text-lg col-span-1 text-left">New email: </p>
+            <p class="text-lg col-span-1 text-center">Email: </p>
             <input
                 class="border border-gray-500 text-left rounded text-xl w-full col-span-2"
                 type="text"
+                @input="saveButtonText"
                 v-model="updatedUser.email">
         </div>
-        <div class="mt-2 grid grid-cols-3 gap-y-1 items-center">
-            <p class="text-sm col-span-1 text-left">New password: </p>
+        <div class="mt-3 sm:mt-5 grid grid-cols-3 gap-y-1 items-center">
+            <p class="text-sm col-span-1 text-center">Old password: </p>
             <input
                 class="border border-gray-500 rounded text-xl w-full col-span-2 text-left"
                 type="password"
+                @input="saveButtonText"
+                v-model="updatedUser.oldPassword">
+        </div>
+        <div class="mt-1 grid grid-cols-3 gap-y-1 items-center">
+            <p class="text-sm col-span-1 text-center">New password: </p>
+            <input
+                class="border border-gray-500 rounded text-xl w-full col-span-2 text-left"
+                type="password"
+                @input="saveButtonText"
                 v-model="updatedUser.password">
         </div>
         <button class="rounded-lg bg-rose-300 hover:bg-rose-400 active:bg-rose-400 w-full p-3 mt-4" @click="disconnect">Disconnect</button>
         <div class="w-full flex flex-row">
             <button class="rounded-lg bg-gray-300 hover:bg-gray-400 active:bg-gray-400 w-full p-3 mt-2 mr-2" @click="cancel">Cancel</button>
-            <button class="rounded-lg bg-green-300 hover:bg-green-400 active:bg-green-400 w-full p-3 mt-2 ml-2" @click="updateUser">Save</button>
+            <button disabled ref="saveButton" class="rounded-lg bg-green-300 disabled:bg-green-200 disabled:text-gray-500 hover:bg-green-400 active:bg-green-400 w-full p-3 mt-2 ml-2" @click="updateUser">{{ buttonText }}</button>
         </div>
     </div>
 </template>
 
 <script>
+import { jwtDecode } from 'jwt-decode';
+
     export default {
         name: "ProfileManagmentUser",
         data() {
@@ -53,8 +67,13 @@
                 updatedUser: {
                     username: this.$store.getters['auth/user'].username,
                     email: this.$store.getters['auth/user'].email,
-                    password: ''},
-                isEditing: false
+                    password: '',
+                    oldPassword: ''
+                },
+                isEditing: false,
+                buttonText: 'Save',
+                usernameOrEmailChanged: false,
+                passwordChanged: false  
             };
         },
         methods: {
@@ -65,13 +84,84 @@
             cancel() {
                 this.$emit('details');
             },
-            async updateUser() {
-                const updatedUser = { "user": this.updatedUser };
+            saveButtonText() {
+                this.usernameOrEmailChanged = this.updatedUser.username !== this.user.username || this.updatedUser.email !== this.user.email;
+                this.passwordChanged = this.updatedUser.password !== '';
+
+                if (this.usernameOrEmailChanged && this.passwordChanged) {
+                    this.buttonText = 'Save All';
+                    this.$refs.saveButton.disabled = false;
+                } else if (this.usernameOrEmailChanged) {
+                    this.buttonText = 'Save User Info';
+                    this.$refs.saveButton.disabled = false;
+                } else if (this.passwordChanged) {
+                    this.buttonText = 'Save Password';
+                    this.$refs.saveButton.disabled = false;
+                } else {
+                    this.buttonText = 'Save';
+                    this.$refs.saveButton.disabled = true;
+                }
+            },
+            updateUser() {
+                if (this.usernameOrEmailChanged) {
+                    this.updateUserInfo().then(() => {
+                        if (this.passwordChanged) {
+                            this.updatePassword();
+                        }
+                    });
+                } else if (this.passwordChanged) {
+                    this.updatePassword();
+                }
+            },
+            async updateUserInfo() {
+                const updatedUser = { "user": {
+                        "username": this.updatedUser.username,
+                        "email": this.updatedUser.email,
+                    }};
                 try {
                     const response = await this.$network.put("/api/users/" + this.user.id, updatedUser);
-                    const updated = await response.json();
-                    this.$store.commit('auth/loginSuccess', updated.data);
-                    this.$emit('details');
+                    if (response.ok) {
+                        const data = await response.json();
+                        localStorage.setItem('token', data.bearer);
+
+                        const user = jwtDecode(data.bearer).user;
+                        this.$store.commit('auth/loginSuccess', user);
+
+                        const csrfToken = data._csrf_token;
+                        this.$store.commit('auth/setCsrfToken', csrfToken);
+
+                        this.$emit('details');
+                    }
+                    else {
+                        throw new Error(`Error: ${response.status}`);
+                    }
+                }
+                catch (error) {
+                    console.log("error :", error)
+                }
+            },
+            async updatePassword() {
+                const updatedUser = {
+                    "new_password": this.updatedUser.password,
+                    "password": this.updatedUser.oldPassword
+                };
+                try {
+                    const response = await this.$network.put("/api/users/password/"  + this.user.id, updatedUser);
+                    if (response.ok) {
+                        const data = await response.json();
+                        localStorage.setItem('token', data.bearer);
+
+                        const user = jwtDecode(data.bearer).user;
+                        this.$store.commit('auth/loginSuccess', user);
+
+                        const csrfToken = data._csrf_token;
+                        this.$store.commit('auth/setCsrfToken', csrfToken);
+
+                        this.$emit('details');
+                    }
+                    else {
+                        throw new Error(`Error: ${response.status}`);
+                    }
                 }
                 catch (error) {
                     console.log("error :", error)
