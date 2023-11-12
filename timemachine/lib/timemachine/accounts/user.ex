@@ -4,10 +4,22 @@ defmodule Timemachine.Accounts.User do
 
   @derive {Jason.Encoder, only: [:id, :username, :email]}
 
+  @roles ["employee", "manager", "admin"]
+  @default_role "employee"
+  def default_role, do: @default_role
+
   schema "users" do
+    # UNIQUE
     field :username, :string
+
+    # UNIQUE
     field :email, :string
+
+    # Nota Bene : inserted value should have key "password", the model will replace it with the hashed value
     field :password_hash, :binary
+
+    # Nota Bene : if inserted value is not included in @roles, @default_role will be set instead
+    field :role, :string, default: @default_role
 
     many_to_many :teams, Timemachine.Accounts.Team,
       join_through: Timemachine.Accounts.UserTeam
@@ -18,8 +30,8 @@ defmodule Timemachine.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(clean(attrs), [:username, :email, :password_hash])
-    |> validate_required([:username, :email, :password_hash])
+    |> cast(clean(attrs), [:username, :email, :password_hash, :role])
+    |> validate_required([:username, :email, :password_hash, :role])
     |> validate_format(:email, ~r/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i, message: "Le format de l'email est invalide")
     |> unique_constraint(:username)
     |> unique_constraint(:email)
@@ -29,6 +41,7 @@ defmodule Timemachine.Accounts.User do
   def clean(attrs) do
     attrs
     |> replace_password_by_hash()
+    |> verify_role()
   end
 
   defp replace_password_by_hash(attrs) do
@@ -40,6 +53,17 @@ defmodule Timemachine.Accounts.User do
       attrs
       |> Map.delete("password")
       |> Map.put("password_hash", :crypto.hash(:sha256, password))
+    end
+  end
+
+  defp verify_role(attrs) do
+    role = Map.get(attrs, "role")
+
+    if role == nil or Enum.member?(@roles, role) do
+      attrs
+    else
+      attrs
+      |> Map.put("role", @default_role)
     end
   end
 

@@ -12,12 +12,14 @@
 Timemachine.Accounts.create_user(%{
   "username" => "macron",
   "email" => "macron@macron-demission.org",
-  "password" => "explosion"
+  "password" => "explosion",
+  "role" => "admin"
 })
 Timemachine.Accounts.create_user(%{
   "username" => "flamby",
   "email" => "flamby@macron-demission.org",
-  "password" => "1234"
+  "password" => "1234",
+  "role" => "manager"
 })
 Timemachine.Accounts.create_user(%{
   "username" => "nicolas",
