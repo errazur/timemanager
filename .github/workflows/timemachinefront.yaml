@@ -11,8 +11,8 @@ env:
     CLUSTER_RESOURCE_GROUP: cyrilaks
     CONTAINER_NAME: image-workflow-1699632488803
     DEPLOYMENT_MANIFEST_PATH: |
-        manifests/deployment.yaml
-        manifests/service.yaml
+        manifests/deploymentfront.yaml
+        manifests/servicefront.yaml
 jobs:
     buildImage:
         permissions:
