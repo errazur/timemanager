@@ -8,6 +8,11 @@ spec:
   selector:
     app: timemachine
   ports:
-    - protocol: TCP
-      port: 4001
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 4000
+    - name: https
+      protocol: TCP
+      port: 443
       targetPort: 4001
