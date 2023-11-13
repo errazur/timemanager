@@ -19,4 +19,4 @@ spec:
         - name: timemachine
           image: acrworkflow1699869789748.azurecr.io/image-workflow-1699869789748:latest
           ports:
-            - containerPort: 4000
+            - containerPort: 4001
