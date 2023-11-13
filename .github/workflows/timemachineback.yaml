@@ -6,13 +6,13 @@ name: timemachineback
     workflow_dispatch: {}
 env:
     ACR_RESOURCE_GROUP: cyrilaks
-    AZURE_CONTAINER_REGISTRY: acrworkflow1699864347380
+    AZURE_CONTAINER_REGISTRY: acrworkflow1699865705247
     CLUSTER_NAME: cyrilaks
     CLUSTER_RESOURCE_GROUP: cyrilaks
-    CONTAINER_NAME: image-workflow-1699864347380
+    CONTAINER_NAME: image-workflow-1699865705247
     DEPLOYMENT_MANIFEST_PATH: |
-        ./manifests/deploymentback.yaml
-        ./manifests/serviceback.yaml
+        manifests/deployment.yaml
+        manifests/service.yaml
 jobs:
     buildImage:
         permissions:
@@ -62,4 +62,4 @@ jobs:
                 action: deploy
                 images: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
                 manifests: ${{ env.DEPLOYMENT_MANIFEST_PATH }}
-                namespace: namespace-workflow-1699864347380
+                namespace: namespace-workflow-1699865705247

@@ -4,7 +4,7 @@ metadata:
   name: timemachineback
   labels:
     app: timemachineback
-  namespace: namespace-workflow-1699614159648
+  namespace: namespace-workflow-1699865705247
 spec:
   replicas: 1
   selector:
@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: timemachineback
-          image: acrworkflow1699614159648.azurecr.io/image-workflow-1699614159648:latest
+          image: acrworkflow1699865705247.azurecr.io/image-workflow-1699865705247:latest
           ports:
-            - containerPort: 4000
+            - containerPort: 80
