@@ -92,6 +92,8 @@ export default {
                 const user = jwtDecode(data.bearer).user;
                 this.$store.commit('auth/loginSuccess', user);
 
+                this.$store.commit('auth/setRole', user.role);
+
                 const csrfToken = data._csrf_token;
                 this.$store.commit('auth/setCsrfToken', csrfToken);
             })
