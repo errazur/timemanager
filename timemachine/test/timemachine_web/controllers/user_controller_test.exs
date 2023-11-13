@@ -40,7 +40,7 @@ defmodule TimemachineWeb.UserControllerTest do
       conn = get(conn, ~p"/api/users")
       user = hd(conn.assigns[:users])
       assert json_response(conn, 200)["data"] == [
-        %{"email" => user.email, "id" => user.id, "username" => user.username, "teams" => []}
+        %{"email" => user.email, "id" => user.id, "username" => user.username, "teams" => [], "role" => "employee"}
       ]
     end
   end
