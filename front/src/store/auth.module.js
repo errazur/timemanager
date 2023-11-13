@@ -38,6 +38,9 @@ export const auth = {
     csrfToken(state) {
       return state.csrfToken;
     },
+    role(state){
+      return state.role
+    }
   },
   mutations: {
     loginSuccess(state, user) {
@@ -57,5 +60,8 @@ export const auth = {
     setCsrfToken(state, token) {
       state.csrfToken = token;
     },
+    setRole(state,role){
+      state.role = role
+    }
   },
 };

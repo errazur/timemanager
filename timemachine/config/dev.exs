@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :timemachine, Timemachine.Repo,
   username: "postgres",
-  password: "root",
+  password: "Kutahya43?",
   hostname: "localhost",
   database: "timemachine_dev",
   stacktrace: true,

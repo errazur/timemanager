@@ -5,7 +5,8 @@
         <h1 class="text-3xl font-medium">Data for Team n° {{teamSelected}}</h1>
         <div>
           <button @click="togglePopup" class="rounded bg-green-400 p-2 mr-6">Add a member</button>
-          <button @click="togglePopupTeam" class="rounded bg-green-300 p-2">Add a team</button>
+          <button @click="togglePopupTeam" class="rounded bg-green-300 p-2 mr-6">Add a team</button>
+          <button v-if="role === 'manager' || role === 'admin'" @click="togglePopupRegister" class="rounded bg-green-200 p-2">Add a user</button>
         </div>
       </div>
 
@@ -13,19 +14,32 @@
         <div class="w-1/2 rounded shadow-md p-6 bg-white relative">
           <button @click="togglePopup" class="absolute right-3 top-3"><img src="@/assets/icons/close-circle.svg" alt=""></button>
           <h2 class="text-2xl mb-6">Add team members</h2>
-          <select v-model="newMember" class="w-full h-10 mb-6">
+          <select v-model="newMember" class="w-full h-10 mb-6 border">
             <option v-for="user in users.data" :value="user.id">{{user.username}}</option>
           </select>
           <button @click="addMember" class="rounded bg-green-300 p-2 w-full">Add user to team</button>
         </div>
       </div>
-      <div v-if="showPopupAddTeam"  class="fixed w-full h-full top-0 left-0  flex items-center justify-center bg-white/50 z-50">
+      <div v-if="showPopupAddTeam" class="fixed w-full h-full top-0 left-0  flex items-center justify-center bg-white/50 z-50">
         <div class="w-1/2 rounded shadow-md p-6 bg-white relative">
           <button @click="togglePopupTeam" class="absolute right-3 top-3"><img src="@/assets/icons/close-circle.svg" alt=""></button>
           <h2 class="text-2xl mb-6">Add new team</h2>
-          <input class="w-full h-10 mb-6 border" v-model="newTeamName">
+          <input class="w-full p-2 mb-6 border" type="text" >
           <button @click="createTeam" class="rounded bg-green-300 p-2 w-full">Add new team</button>
         </div>
+      </div>
+      <div v-if="showPopupRegister" class="fixed w-full h-full top-0 left-0  flex items-center justify-center bg-white/50 z-50">
+        <div class="w-1/2 rounded shadow-md p-6 bg-white relative">
+        <button @click="togglePopupRegister" class="absolute right-3 top-3"><img src="@/assets/icons/close-circle.svg" alt=""></button>
+        <form @submit.prevent="createUser">
+          <div class="flex flex-col">
+            <p>Username: <input class="border w-full p-2 mb-3 rounded" type="text" v-model="username"></p>
+            <p>Email: <input class="border w-full mb-3 p-2 rounded" type="email" v-model="email"></p>
+            <p>Password: <input class="border mb-3 p-2 w-full rounded mb-6" type="password" v-model="password"></p>
+            <button type="submit" class="rounded bg-slate-200 hover:bg-slate-300 p-3 m-1 p-2 w-full">Register</button>
+          </div>
+        </form>
+      </div>
       </div>
       <select class="h-10 border border-gray-300 w-full" v-model="teamSelected" @change="handleTeamSelect()">
         <option disabled selected value="">Please select one</option>
@@ -67,7 +81,7 @@
           </select>
           <p class="mb-2">Start : <input class="ml-2 px-3 py-1 border rounded" v-model="newWorkingTimeMember.start" type="datetime-local"></p>
           <p class="mb-2">End : <input class="ml-2 px-3 py-1 border rounded" v-model="newWorkingTimeMember.end" type="datetime-local"></p>
-          <button class="rounded bg-rose-200 p-2 mt-2 mb-8" @click="getWorkingTimeByTeam(selectedUserWorkingtime)">Create a working time</button>
+          <button class="rounded bg-rose-200 p-2 mt-2 mb-8" @click="createWorkingTimeUser(selectedUserWorkingtime)">Create a working time</button>
           <p>Norm hours per day : <input type="number" v-model="normHoursData"></p>
           <p>Limit of night hours per day : <input type="number" v-model="limitHoursData"></p>
         </div>
@@ -106,6 +120,7 @@ export default {
       clockIn: false,
       showPopupAddUser: false,
       showPopupAddTeam: false,
+      showPopupRegister: false,
       dataTable: [
         {
           start: '2023-11-08 08:00:00',
@@ -126,7 +141,6 @@ export default {
           team: 3
         }
       ],
-      filteredData: [],
       membersList: [],
       selectedUserWorkingtime: null,
       teams: null,
@@ -138,15 +152,12 @@ export default {
         start: "",
         end: ""
       },
-      users: {
-        "data":
-            [
-                {"id":1,"username":"macron","email":"admin@macron-demission.org","teams":[]},
-                {"id":2,"username":"test","email":"admin@macron-demission.org","teams":[]}
-            ]
-      },
+      users: {},
       newMember: null,
       newTeamName: "",
+      username: '',
+      email: '',
+      password: ''
     };
   },
   components: {
@@ -154,7 +165,7 @@ export default {
     RegistrationUser,
   },
   computed: {
-    ...mapGetters(['getNormHoursPerDay', 'getLimitHours', 'getTeamsManager']),
+    ...mapGetters(['getNormHoursPerDay', 'getLimitHours', 'getTeamsManager', 'auth/role']),
     normHoursData: {
       get() {
         return this.getNormHoursPerDay;
@@ -171,6 +182,10 @@ export default {
       set(value){
         store.commit('setLimit', value)
       }
+    },
+    role() {
+      console.log(store.getters['auth/role'])
+      return this.$store.getters['auth/role'];
     }
   },
 
@@ -195,6 +210,9 @@ export default {
     togglePopupTeam() {
       this.showPopupAddTeam = !this.showPopupAddTeam;
     },
+    togglePopupRegister(){
+      this.showPopupRegister = !this.showPopupRegister;
+    },
     async getTeams(){
       try {
         // const userId = context.rootState.auth.user.id;
@@ -208,14 +226,14 @@ export default {
       }
     },
     async createTeam(){
-      console.log(this.newTeamName)
       try{
         const body = {
           "team": {
             "name": toRaw(this.newTeamName)
           }
         };
-        const response = await this.$network.post(`/api/teams/`, body)
+        await this.$network.post(`/api/teams/`, body)
+        this.showPopupAddTeam = false
       }
       catch (e) {
         console.log("error :", e)
@@ -238,8 +256,7 @@ export default {
     },
     async addMember(){
       try {
-        const response = await this.$network.post(`/api/users/${this.newMember}/teams/${this.teamSelected}/`);
-        console.log(response)
+        await this.$network.post(`/api/users/${this.newMember}/teams/${this.teamSelected}/`);
         this.showPopupAddUser = false
       }
       catch(e){
@@ -249,7 +266,7 @@ export default {
     async getUsers(){
       try{
         const response = await this.$network.get('/api/users/');
-        console.log("users : ", response.json())
+        this.users = await response.json();
       }
       catch(e){
         console.log(e)
@@ -285,7 +302,7 @@ export default {
         console.log(e)
       }
     },
-    async createClockTeam(){
+    async createClockTeam() {
       this.clockIn = !this.clockIn
       try {
         const body = {
@@ -297,22 +314,34 @@ export default {
         const response = await this.$network.post(`/api/clocks/teams/${this.teamSelected}`, body);
         console.log(response)
         console.log(this.clockIn)
-      }
-      catch(e){
+      } catch (e) {
         console.log(e)
       }
+    },
+    async createUser() {
+     try{
+       const url = '/api/users/';
+       const data = {
+         user: {
+           username: this.username,
+           email: this.email,
+           password: this.password
+         }
+       };
+       await this.$network.post(url, data)
+       this.showPopupRegister = false
+     }
+     catch(e){
+       console.log("Error : ",e)
+     }
     }
   },
   mounted() {
     this.normHours = this.getNormHours();
     this.limitNightHours =  this.getLimitNightHours()
     store.commit('setTeamSelected', this.teamSelected);
-    // this.createTeam();
     this.getTeams();
     this.getUsers();
-    // this.addUserToTeam()
-    // console.log("teams : ",toRaw(this.teams).data.map((e) => console.log(e.id)))
-    // this.teams = toRaw(this.teams).data
   }
 }
 </script>
