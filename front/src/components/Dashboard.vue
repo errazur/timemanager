@@ -141,6 +141,6 @@ export default {
   background-color: #F4BF96;
 }
 .dashboard .vuecal__event.current{
-  background: linear-gradient(180deg, rgba(206, 90, 103, 0.26) 0%, #CE5A67 9.9%, #CE5A67 34.38%, #F4BF96 57.81%, #F4BF96 90.62%, rgba(244, 191, 150, 0.26) 100%);
+  background: linear-gradient(180deg,#CE5A67 0%, #CE5A67 34.38%, #F4BF96 57.81%, #F4BF96 100%);
 }
 </style>
