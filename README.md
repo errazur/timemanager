@@ -1,3 +1,11 @@
+# Generate back-end doc
+
+```sh
+cd timemachine
+mix docs
+mv doc priv/static
+```
+
 # Setup on Windows
 
 ## Front
