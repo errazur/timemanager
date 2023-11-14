@@ -27,12 +27,14 @@ defmodule TimemachineWeb.Plugs.BearerValidate do
   @doc """
   Call function for the BearerValidate plug.
 
-  Parameters
-  conn (type: Plug.Conn.t()): The connection struct.
-  _default (type: term()): The default value.
-  Returns
-  If Bearer token is valid, the connection is returned. If the token is invalid or missing, it falls back to the FallbackController with a 401 Unauthorized error.
+  ## Parameters
 
+  - `conn` (type: Plug.Conn.t()): The connection struct.
+  - `_default` (type: term()): The default value.
+
+  ## Returns
+
+  If the Bearer token is valid, the connection is returned. If the token is invalid or missing, it falls back to the `FallbackController` with a 401 Unauthorized error.
   """
   def call(conn, _default), do: authenticate(conn)
 

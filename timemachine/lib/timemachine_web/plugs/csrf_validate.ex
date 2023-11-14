@@ -28,12 +28,14 @@ defmodule TimemachineWeb.Plugs.CSRFValidate do
   @doc """
   Call function for the CSRFValidate plug.
 
-  Parameters
-  conn (type: Plug.Conn.t()): The connection struct.
-  _default (type: term()): The default value.
-  Returns
-  If CSRF token is valid, the connection is returned. If the token is invalid or missing, it falls back to the FallbackController with a 401 Unauthorized error. If the token is present but not authorized for the current user, it falls back with a 403 Forbidden error.
+  ## Parameters
 
+  - `conn` (type: Plug.Conn.t()): The connection struct.
+  - `_default` (type: term()): The default value.
+
+  ## Returns
+
+  If the CSRF token is valid, the connection is returned. If the token is invalid or missing, it falls back to the `FallbackController` with a 401 Unauthorized error. If the token is present but not authorized for the current user, it falls back with a 403 Forbidden error.
   """
   def call(conn, _default), do: authenticate(conn)
 
