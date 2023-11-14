@@ -1,7 +1,7 @@
 defmodule TimemachineWeb.UserControllerTest do
   use TimemachineWeb.ConnCase
 
-  import Timemachine.AccountsFixtures
+  import Timemachine.DataFixtures
 
   alias Timemachine.Tokens.CSRF
 

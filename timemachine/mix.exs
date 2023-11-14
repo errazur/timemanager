@@ -4,7 +4,7 @@ defmodule Timemachine.MixProject do
   def project do
     [
       app: :timemachine,
-      version: "0.1.0",
+      version: "1.0.1",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
@@ -53,6 +53,7 @@ defmodule Timemachine.MixProject do
       {:cors_plug, "~> 3.0"},
       {:joken, "~> 2.6"},
       {:jason, "~> 1.3"},
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false},
     ]
   end
 
@@ -70,7 +71,7 @@ defmodule Timemachine.MixProject do
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["tailwind default", "esbuild default"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
+      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
     ]
   end
 end

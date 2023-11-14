@@ -1,5 +1,7 @@
 defmodule TimemachineWeb.TeamJSON do
-  alias Timemachine.Accounts.Team
+  @moduledoc false
+
+  alias Timemachine.Data.Team
 
   def index(%{teams: teams}) do
     %{data: for(team <- teams, do: data(team))}

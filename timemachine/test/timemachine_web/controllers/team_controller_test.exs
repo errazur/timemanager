@@ -1,7 +1,7 @@
 defmodule TimemachineWeb.TeamControllerTest do
   use TimemachineWeb.ConnCase
 
-  import Timemachine.AccountsFixtures
+  import Timemachine.DataFixtures
 
   alias Timemachine.Tokens.CSRF
 
@@ -51,7 +51,7 @@ defmodule TimemachineWeb.TeamControllerTest do
   end
 
   describe "update team" do
-    setup [:create_team]
+    setup [:team_create]
 
     test "renders team when data is valid", %{conn: conn, team: team} do
       team_id = team.id
@@ -73,7 +73,7 @@ defmodule TimemachineWeb.TeamControllerTest do
   end
 
   describe "delete team" do
-    setup [:create_team]
+    setup [:team_create]
 
     test "deletes chosen team", %{conn: conn, team: team} do
       team_id = team.id
@@ -86,7 +86,7 @@ defmodule TimemachineWeb.TeamControllerTest do
     end
   end
 
-  defp create_team(_) do
+  defp team_create(_) do
     team = team_fixture()
     %{team: team}
   end

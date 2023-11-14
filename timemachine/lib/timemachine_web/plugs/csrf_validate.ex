@@ -1,4 +1,4 @@
-defmodule TimemachineWeb.Plugs.ValidateCSRF do
+defmodule TimemachineWeb.Plugs.CSRFValidate do
   alias Timemachine.Tokens.Bearer
   alias Timemachine.Tokens.CSRF
   alias TimemachineWeb.FallbackController

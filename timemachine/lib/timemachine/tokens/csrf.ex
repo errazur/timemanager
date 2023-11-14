@@ -1,27 +1,48 @@
 defmodule Timemachine.Tokens.CSRF do
+  @doc false
   use Agent
 
+  @doc false
   def start_link(_arg) do
     Agent.start_link(fn -> %{} end, name: __MODULE__)
   end
 
+  @doc """
+  Generates a new CSRF token for the given `user_id`. Use `get(user_id)` to get the token.
+  """
+  @spec generate(integer()) :: :ok
   def generate(user_id) do
     Agent.update(__MODULE__, &Map.put(&1, user_id,  Base.encode64(:crypto.strong_rand_bytes(24))))
   end
 
+  @doc """
+  Returns the CSRF token stored for the given `user_id`.
+  """
+  @spec get(integer()) :: String.t()
   def get(user_id) do
     Agent.get(__MODULE__, &Map.get(&1, user_id))
   end
 
+   @doc """
+  Deletes the CSRF token stored for the given `user_id`.
+  """
+  @spec delete(integer()) :: :ok
   def delete(user_id) do
     Agent.update(__MODULE__, &Map.delete(&1, user_id))
   end
 
+  @doc """
+  Checks if the given CSRF token matches the stored one for this `user_id`.
+  """
+  @spec authorized?(integer(), String.t()) :: boolean()
   def authorized?(user_id, csrf) do
-    stored = get(user_id)
-    stored == csrf
+    get(user_id) == csrf
   end
 
+  @doc """
+  Returns the CSRF token from a `conn` by reading `x-csrf-token` header.
+  """
+  @spec get_from_conn(Plug.Conn.t()) :: {:ok, String.t()} | {:error, String.t()}
   def get_from_conn(conn) do
     case Plug.Conn.get_req_header(conn, "x-csrf-token") do
       [csrf] -> {:ok, csrf}

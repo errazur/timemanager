@@ -1,7 +1,7 @@
-defmodule Timemachine.AccountsFixtures do
+defmodule Timemachine.DataFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Timemachine.Accounts` context.
+  entities via the `Timemachine.Data` context.
   """
 
   @doc """
@@ -15,7 +15,7 @@ defmodule Timemachine.AccountsFixtures do
         "username" => "some username",
         "password" => "mdp"
       })
-      |> Timemachine.Accounts.create_user()
+      |> Timemachine.Data.user_create()
 
     user
   end
@@ -30,7 +30,7 @@ defmodule Timemachine.AccountsFixtures do
         status: true,
         time: ~U[2023-10-23 09:21:00Z],
       })
-      |> Timemachine.Accounts.create_clock()
+      |> Timemachine.Data.clock_create()
 
     clock
   end
@@ -47,7 +47,7 @@ defmodule Timemachine.AccountsFixtures do
       },
       attrs
     )
-    {:ok, workingtime} = Timemachine.Accounts.create_workingtime(attrs, user.id)
+    {:ok, workingtime} = Timemachine.Data.workingtime_create(attrs, user.id)
     workingtime
   end
 
@@ -60,7 +60,7 @@ defmodule Timemachine.AccountsFixtures do
       |> Enum.into(%{
         name: "some name"
       })
-      |> Timemachine.Accounts.create_team()
+      |> Timemachine.Data.team_create()
 
     team
   end

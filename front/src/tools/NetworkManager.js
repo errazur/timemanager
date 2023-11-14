@@ -7,7 +7,7 @@ const storedReqs = 'requests';
 
 class NetworkManager {
     constructor() {
-        this.api = import.meta.env.VITE_API_HOST
+        this.api = import.meta.env.VITE_API_HOST //+ ':' + import.meta.env.VITE_API_PORT
         this.storage = new StorageHelper()
         this.storage.ensure(storedReqs, [])
         this.status = {

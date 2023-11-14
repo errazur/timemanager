@@ -1,3 +1,13 @@
+# Generate back-end doc
+
+Supprimer priv/static/doc, puis
+
+```sh
+cd timemachine
+mix docs
+mv doc priv/static
+```
+
 # Setup on Windows
 
 ## Front

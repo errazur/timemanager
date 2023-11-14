@@ -1,4 +1,4 @@
-defmodule Timemachine.Accounts.Team do
+defmodule Timemachine.Data.Team do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -6,8 +6,8 @@ defmodule Timemachine.Accounts.Team do
     # UNIQUE
     field :name, :string
 
-    many_to_many :users, Timemachine.Accounts.User,
-      join_through: Timemachine.Accounts.UserTeam
+    many_to_many :users, Timemachine.Data.User,
+      join_through: Timemachine.Data.UserTeam
 
     timestamps(type: :utc_datetime)
   end
