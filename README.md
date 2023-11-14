@@ -1,5 +1,7 @@
 # Generate back-end doc
 
+Supprimer priv/static/doc, puis
+
 ```sh
 cd timemachine
 mix docs
