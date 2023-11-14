@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-EPF2X7PV.js"></script>
-    <script src="dist/sidebar_items-A7025C2F.js"></script>
+    <script src="dist/sidebar_items-A3F5AC1B.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -116,6 +116,64 @@ Pages
 
 </h1>
 
+
+  <section id="moduledoc">
+<p>The main router for TimemachineWeb, responsible for handling browser, API, and authenticated requests.</p><h2 id="module-pipelines" class="section-heading">
+  <a href="#module-pipelines" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Pipelines</span>
+</h2>
+<ul><li><code class="inline">:browser</code>: Handles browser requests.</li><li><code class="inline">:api</code>: Handles API requests.</li><li><code class="inline">:auth</code>: Handles authenticated requests.</li></ul><h2 id="module-public-routes" class="section-heading">
+  <a href="#module-public-routes" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Public Routes</span>
+</h2>
+<ul><li><code class="inline">GET /api/users</code>: Search for users. Parameters: <code class="inline">?email=XXX&amp;username=YYY</code>.</li><li><code class="inline">GET /api/users/:id</code>: Get details of a specific user.</li><li><code class="inline">POST /api/login</code>: User login.</li></ul><h2 id="module-protected-routes" class="section-heading">
+  <a href="#module-protected-routes" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Protected Routes</span>
+</h2>
+<p>Requires both <code class="inline">:api</code> and <code class="inline">:auth</code> pipelines.</p><h3 id="module-miscellaneous" class="section-heading">
+  <a href="#module-miscellaneous" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Miscellaneous</span>
+</h3>
+<ul><li><code class="inline">GET /api/tokens</code>: Get user tokens.</li></ul><h3 id="module-users" class="section-heading">
+  <a href="#module-users" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Users</span>
+</h3>
+<ul><li><code class="inline">PUT /api/users/password/:id</code>: Update user password.</li><li><code class="inline">POST /api/users</code>: Create a new user.</li><li><code class="inline">PUT /api/users/:id</code>: Update user details.</li><li><code class="inline">DELETE /api/users/:id</code>: Delete a user.</li></ul><h3 id="module-clocks" class="section-heading">
+  <a href="#module-clocks" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Clocks</span>
+</h3>
+<ul><li><code class="inline">GET /api/clocks/teams/:team_id</code>: Get clocks by team.</li><li><code class="inline">POST /api/clocks/teams/:team_id</code>: Create a clock for a team.</li><li><code class="inline">GET /api/clocks/:user_id</code>: Get clocks by user.</li><li><code class="inline">POST /api/clocks/:user_id</code>: Create a clock for a user.</li></ul><h3 id="module-working-times" class="section-heading">
+  <a href="#module-working-times" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Working Times</span>
+</h3>
+<ul><li><code class="inline">GET /api/workingtimes/teams/:team_id</code>: Get working times by team.</li><li><code class="inline">POST /api/workingtimes/teams/:team_id</code>: Create a working time for a team.</li><li><code class="inline">GET /api/workingtimes/:user_id</code>: Get working times by user.</li><li><code class="inline">GET /api/workingtimes/:user_id/:id</code>: Get details of a specific working time.</li><li><code class="inline">POST /api/workingtimes/:user_id</code>: Create a working time for a user.</li><li><code class="inline">PUT /api/workingtimes/:id</code>: Update working time.</li><li><code class="inline">DELETE /api/workingtimes/:id</code>: Delete working time.</li></ul><h3 id="module-teams" class="section-heading">
+  <a href="#module-teams" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Teams</span>
+</h3>
+<ul><li><code class="inline">GET /api/teams</code>: Get all teams.</li><li><code class="inline">GET /api/teams/:id</code>: Get details of a specific team.</li><li><code class="inline">POST /api/teams</code>: Create a new team.</li><li><code class="inline">PUT /api/teams/:id</code>: Update team details.</li><li><code class="inline">DELETE /api/teams/:id</code>: Delete a team.</li></ul><h3 id="module-users-teams" class="section-heading">
+  <a href="#module-users-teams" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Users Teams</span>
+</h3>
+<ul><li><code class="inline">POST /api/users/:user_id/teams/:team_id</code>: Add a user to a team.</li><li><code class="inline">DELETE /api/users/:user_id/teams/:team_id</code>: Remove a user from a team.</li></ul>
+  </section>
 
 
   <section id="summary" class="details-list">

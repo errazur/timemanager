@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-EPF2X7PV.js"></script>
-    <script src="dist/sidebar_items-A7025C2F.js"></script>
+    <script src="dist/sidebar_items-A3F5AC1B.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -117,6 +117,22 @@ Pages
 </h1>
 
 
+  <section id="moduledoc">
+<p>Controller for managing user data.</p><h2 id="module-actions" class="section-heading">
+  <a href="#module-actions" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Actions</span>
+</h2>
+<ul><li><code class="inline">search(conn, params)</code>: Search for users based on specified parameters.</li><li><code class="inline">login(conn, %{&quot;credentials&quot; =&gt; credentials})</code>: Login using username and password, sends JWT and CSRF tokens.</li><li><code class="inline">tokens(conn, _params)</code>: Send JWT and CSRF tokens for the current user.</li><li><code class="inline">create(conn, %{&quot;user&quot; =&gt; user_params})</code>: Create a new user.</li><li><code class="inline">show(conn, %{&quot;id&quot; =&gt; id})</code>: Retrieve details of a specific user.</li><li><code class="inline">update(conn, %{&quot;id&quot; =&gt; id, &quot;user&quot; =&gt; user_params})</code>: Update details of a specific user.</li><li><code class="inline">update_password(conn, %{&quot;id&quot; =&gt; id, &quot;password&quot; =&gt; password, &quot;new_password&quot; =&gt; new_password})</code>: Update user password.</li><li><code class="inline">delete(conn, %{&quot;id&quot; =&gt; id})</code>: Delete a specific user.</li></ul><h2 id="module-helper-functions" class="section-heading">
+  <a href="#module-helper-functions" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Helper Functions</span>
+</h2>
+<ul><li><code class="inline">send_tokens(conn, user)</code>: Send JWT and CSRF tokens in the response headers.</li></ul>
+  </section>
+
 
   <section id="summary" class="details-list">
     <h1 class="section-heading">
@@ -136,6 +152,8 @@ Pages
 
       </div>
 
+        <div class="summary-synopsis"><p>Create a new user.</p></div>
+
     </div>
 
     <div class="summary-row">
@@ -143,6 +161,8 @@ Pages
         <a href="#delete/2" translate="no">delete(conn, map)</a>
 
       </div>
+
+        <div class="summary-synopsis"><p>Delete a specific user.</p></div>
 
     </div>
 
@@ -152,6 +172,8 @@ Pages
 
       </div>
 
+        <div class="summary-synopsis"><p>Login using username and password, sends JWT and CSRF tokens.</p></div>
+
     </div>
 
     <div class="summary-row">
@@ -159,6 +181,8 @@ Pages
         <a href="#search/2" translate="no">search(conn, params)</a>
 
       </div>
+
+        <div class="summary-synopsis"><p>Search for users based on specified parameters.</p></div>
 
     </div>
 
@@ -168,6 +192,8 @@ Pages
 
       </div>
 
+        <div class="summary-synopsis"><p>Retrieve details of a specific user.</p></div>
+
     </div>
 
     <div class="summary-row">
@@ -175,6 +201,8 @@ Pages
         <a href="#tokens/2" translate="no">tokens(conn, params)</a>
 
       </div>
+
+        <div class="summary-synopsis"><p>Send JWT and CSRF tokens for the current user.</p></div>
 
     </div>
 
@@ -184,6 +212,8 @@ Pages
 
       </div>
 
+        <div class="summary-synopsis"><p>Update details of a specific user.</p></div>
+
     </div>
 
     <div class="summary-row">
@@ -191,6 +221,8 @@ Pages
         <a href="#update_password/2" translate="no">update_password(conn, map)</a>
 
       </div>
+
+        <div class="summary-synopsis"><p>Update user password.</p></div>
 
     </div>
 
@@ -221,7 +253,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Create a new user.</p><h2 id="create/2-parameters" class="section-heading">
+  <a href="#create/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters, including <code class="inline">&quot;user&quot;</code>.</li></ul><h2 id="create/2-returns" class="section-heading">
+  <a href="#create/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Renders the <code class="inline">:show</code> view with the details of the created user.</p>
   </section>
 </section>
 <section class="detail" id="delete/2">
@@ -238,7 +282,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Delete a specific user.</p><h2 id="delete/2-parameters" class="section-heading">
+  <a href="#delete/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters, including <code class="inline">&quot;id&quot;</code>.</li></ul><h2 id="delete/2-returns" class="section-heading">
+  <a href="#delete/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Responds with a <code class="inline">:no_content</code> status.</p>
   </section>
 </section>
 <section class="detail" id="login/2">
@@ -255,7 +311,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Login using username and password, sends JWT and CSRF tokens.</p><h2 id="login/2-parameters" class="section-heading">
+  <a href="#login/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters, including <code class="inline">&quot;credentials&quot;</code>.</li></ul><h2 id="login/2-returns" class="section-heading">
+  <a href="#login/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Sends JWT and CSRF tokens in the response headers.</p>
   </section>
 </section>
 <section class="detail" id="search/2">
@@ -272,7 +340,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Search for users based on specified parameters.</p><h2 id="search/2-parameters" class="section-heading">
+  <a href="#search/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing search parameters.</li></ul><h2 id="search/2-returns" class="section-heading">
+  <a href="#search/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Renders the <code class="inline">:search</code> view with a list of users based on search parameters.</p>
   </section>
 </section>
 <section class="detail" id="show/2">
@@ -289,7 +369,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Retrieve details of a specific user.</p><h2 id="show/2-parameters" class="section-heading">
+  <a href="#show/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters, including <code class="inline">&quot;id&quot;</code>.</li></ul><h2 id="show/2-returns" class="section-heading">
+  <a href="#show/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Renders the <code class="inline">:show</code> view with details of the specified user.</p>
   </section>
 </section>
 <section class="detail" id="tokens/2">
@@ -306,7 +398,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Send JWT and CSRF tokens for the current user.</p><h2 id="tokens/2-parameters" class="section-heading">
+  <a href="#tokens/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters (not used).</li></ul><h2 id="tokens/2-returns" class="section-heading">
+  <a href="#tokens/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Sends JWT and CSRF tokens in the response headers.</p>
   </section>
 </section>
 <section class="detail" id="update/2">
@@ -323,7 +427,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Update details of a specific user.</p><h2 id="update/2-parameters" class="section-heading">
+  <a href="#update/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters, including <code class="inline">&quot;id&quot;</code> and <code class="inline">&quot;user&quot;</code>.</li></ul><h2 id="update/2-returns" class="section-heading">
+  <a href="#update/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Renders the <code class="inline">:show</code> view with the updated details of the user.</p>
   </section>
 </section>
 <section class="detail" id="update_password/2">
@@ -340,7 +456,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Update user password.</p><h2 id="update_password/2-parameters" class="section-heading">
+  <a href="#update_password/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters, including <code class="inline">&quot;id&quot;</code>, <code class="inline">&quot;password&quot;</code>, and <code class="inline">&quot;new_password&quot;</code>.</li></ul><h2 id="update_password/2-returns" class="section-heading">
+  <a href="#update_password/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Sends JWT and CSRF tokens in the response headers.</p>
   </section>
 </section>
 

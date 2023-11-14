@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-EPF2X7PV.js"></script>
-    <script src="dist/sidebar_items-A7025C2F.js"></script>
+    <script src="dist/sidebar_items-A3F5AC1B.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -117,6 +117,16 @@ Pages
 </h1>
 
 
+  <section id="moduledoc">
+<p>Controller for managing clock data.</p><h2 id="module-actions" class="section-heading">
+  <a href="#module-actions" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Actions</span>
+</h2>
+<ul><li><code class="inline">index(conn, %{&quot;user_id&quot; =&gt; user_id})</code>: Retrieve a list of clocks for a specific user.</li><li><code class="inline">create(conn, %{&quot;clock&quot; =&gt; clock_params, &quot;user_id&quot; =&gt; user_id})</code>: Create a new clock entry for a user.</li><li><code class="inline">get_by_team(conn, %{&quot;team_id&quot; =&gt; team_id})</code>: Retrieve a list of clocks for all users in a team.</li><li><code class="inline">create_for_team(conn, %{&quot;clock&quot; =&gt; clock_params, &quot;team_id&quot; =&gt; team_id})</code>: Create a new clock entry for all users in a team.</li></ul>
+  </section>
+
 
   <section id="summary" class="details-list">
     <h1 class="section-heading">
@@ -136,6 +146,8 @@ Pages
 
       </div>
 
+        <div class="summary-synopsis"><p>Create a new clock entry for a user.</p></div>
+
     </div>
 
     <div class="summary-row">
@@ -143,6 +155,8 @@ Pages
         <a href="#create_for_team/2" translate="no">create_for_team(conn, map)</a>
 
       </div>
+
+        <div class="summary-synopsis"><p>Create a new clock entry for all users in a team.</p></div>
 
     </div>
 
@@ -152,6 +166,8 @@ Pages
 
       </div>
 
+        <div class="summary-synopsis"><p>Retrieve a list of clocks for all users in a team.</p></div>
+
     </div>
 
     <div class="summary-row">
@@ -159,6 +175,8 @@ Pages
         <a href="#index/2" translate="no">index(conn, map)</a>
 
       </div>
+
+        <div class="summary-synopsis"><p>Retrieve a list of clocks for a specific user.</p></div>
 
     </div>
 
@@ -189,7 +207,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Create a new clock entry for a user.</p><h2 id="create/2-parameters" class="section-heading">
+  <a href="#create/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters, including <code class="inline">&quot;clock&quot;</code> and <code class="inline">&quot;user_id&quot;</code>.</li></ul><h2 id="create/2-returns" class="section-heading">
+  <a href="#create/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Renders the <code class="inline">:show</code> view with the details of the created clock entry.</p>
   </section>
 </section>
 <section class="detail" id="create_for_team/2">
@@ -206,7 +236,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Create a new clock entry for all users in a team.</p><h2 id="create_for_team/2-parameters" class="section-heading">
+  <a href="#create_for_team/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters, including <code class="inline">&quot;clock&quot;</code> and <code class="inline">&quot;team_id&quot;</code>.</li></ul><h2 id="create_for_team/2-returns" class="section-heading">
+  <a href="#create_for_team/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Responds with a <code class="inline">:no_content</code> status.</p>
   </section>
 </section>
 <section class="detail" id="get_by_team/2">
@@ -223,7 +265,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Retrieve a list of clocks for all users in a team.</p><h2 id="get_by_team/2-parameters" class="section-heading">
+  <a href="#get_by_team/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters, including <code class="inline">&quot;team_id&quot;</code>.</li></ul><h2 id="get_by_team/2-returns" class="section-heading">
+  <a href="#get_by_team/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Renders the <code class="inline">:index</code> view with a list of clocks for all users in the specified team.</p>
   </section>
 </section>
 <section class="detail" id="index/2">
@@ -240,7 +294,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Retrieve a list of clocks for a specific user.</p><h2 id="index/2-parameters" class="section-heading">
+  <a href="#index/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters, including <code class="inline">&quot;user_id&quot;</code>.</li></ul><h2 id="index/2-returns" class="section-heading">
+  <a href="#index/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Renders the <code class="inline">:index</code> view with a list of clocks for the specified user.</p>
   </section>
 </section>
 

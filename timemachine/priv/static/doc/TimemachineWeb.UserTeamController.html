@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-EPF2X7PV.js"></script>
-    <script src="dist/sidebar_items-A7025C2F.js"></script>
+    <script src="dist/sidebar_items-A3F5AC1B.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -117,6 +117,16 @@ Pages
 </h1>
 
 
+  <section id="moduledoc">
+<p>Controller for managing user-team associations.</p><h2 id="module-actions" class="section-heading">
+  <a href="#module-actions" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Actions</span>
+</h2>
+<ul><li><code class="inline">add(conn, %{&quot;user_id&quot; =&gt; user_id, &quot;team_id&quot; =&gt; team_id})</code>: Add a user to a team.</li><li><code class="inline">remove(conn, %{&quot;user_id&quot; =&gt; user_id, &quot;team_id&quot; =&gt; team_id})</code>: Remove a user from a team.</li></ul>
+  </section>
+
 
   <section id="summary" class="details-list">
     <h1 class="section-heading">
@@ -136,6 +146,8 @@ Pages
 
       </div>
 
+        <div class="summary-synopsis"><p>Add a user to a team.</p></div>
+
     </div>
 
     <div class="summary-row">
@@ -143,6 +155,8 @@ Pages
         <a href="#remove/2" translate="no">remove(conn, map)</a>
 
       </div>
+
+        <div class="summary-synopsis"><p>Remove a user from a team.</p></div>
 
     </div>
 
@@ -173,7 +187,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Add a user to a team.</p><h2 id="add/2-parameters" class="section-heading">
+  <a href="#add/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters, including <code class="inline">&quot;user_id&quot;</code> and <code class="inline">&quot;team_id&quot;</code>.</li></ul><h2 id="add/2-returns" class="section-heading">
+  <a href="#add/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Responds with a <code class="inline">:no_content</code> status.</p>
   </section>
 </section>
 <section class="detail" id="remove/2">
@@ -190,7 +216,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Remove a user from a team.</p><h2 id="remove/2-parameters" class="section-heading">
+  <a href="#remove/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters, including <code class="inline">&quot;user_id&quot;</code> and <code class="inline">&quot;team_id&quot;</code>.</li></ul><h2 id="remove/2-returns" class="section-heading">
+  <a href="#remove/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Responds with a <code class="inline">:no_content</code> status.</p>
   </section>
 </section>
 

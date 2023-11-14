@@ -1,6 +1,6 @@
 defmodule Timemachine.Data do
   @moduledoc """
-  The Data context.
+  The Data context for managing data operations in the Timemachine application.
   """
   import Ecto.Query, warn: false
   alias Timemachine.Repo
@@ -8,7 +8,17 @@ defmodule Timemachine.Data do
   alias Timemachine.Data.Clock
 
   @doc """
-  Creates a clock for the given `user_id`. `attrs` should contains `"status"` and `"time"`.
+  Creates a clock entry for the given `user_id`.
+
+  ## Parameters
+
+  - `attrs` (type: map, default: %{}): Map containing attributes for the clock entry. Should include `"status"` and `"time"`.
+  - `user_id` (type: integer()): The user ID for whom the clock entry is created.
+
+  ## Returns
+
+  Returns `:ok` if the clock entry is successfully created.
+
   """
   def clock_create(attrs \\ %{}, user_id) do
     # Génère l'horloge si le statut est faux
@@ -22,14 +32,32 @@ defmodule Timemachine.Data do
   end
 
   @doc """
-  Returns the last clock made by the user `user_id`.
+  Returns the last clock entry made by the user with the given `user_id`.
+
+  ## Parameters
+
+  - `user_id` (type: integer()): The user ID for whom the last clock entry is retrieved.
+
+  ## Returns
+
+  Returns the last clock entry as a `%Clock{}` struct.
+
   """
   def clock_get_last_by_user_id(user_id) do
     Repo.one(from(c in Clock, where: [user_id: ^user_id], order_by: [desc: c.id], limit: 1, preload: :user))
   end
 
   @doc """
-  Returns all clocks made by the user `user_id`.
+  Returns all clock entries made by the user with the given `user_id`.
+
+  ## Parameters
+
+  - `user_id` (type: integer()): The user ID for whom the clock entries are retrieved.
+
+  ## Returns
+
+  Returns a list of clock entries as `%Clock{}` structs.
+
   """
   def clock_list_by_user_id(user_id) do
     Repo.all(from(c in Clock, where: [user_id: ^user_id], order_by: :id, preload: :user))
@@ -43,7 +71,16 @@ defmodule Timemachine.Data do
   alias Timemachine.Data.Team
 
   @doc """
-  Creates a new team. `attrs` should contain `"name"`.
+  Creates a new team.
+
+  ## Parameters
+
+  - `attrs` (type: map, default: %{}): Map containing attributes for the team. Should include `"name"`.
+
+  ## Returns
+
+  Returns `:ok` if the team is successfully created.
+
   """
   def team_create(attrs \\ %{}) do
     %Team{}
@@ -54,6 +91,15 @@ defmodule Timemachine.Data do
 
   @doc """
   Deletes the given team.
+
+  ## Parameters
+
+  - `team` (type: %Team{}): The team to be deleted.
+
+  ## Returns
+
+  Returns `:ok` if the team is successfully deleted.
+
   """
   def team_delete(%Team{} = team) do
     Repo.delete(team)
@@ -61,6 +107,15 @@ defmodule Timemachine.Data do
 
   @doc """
   Returns the team with the same `id`.
+
+  ## Parameters
+
+  - `id` (type: any()): The ID of the team to be retrieved.
+
+  ## Returns
+
+  Returns the team as a `%Team{}` struct.
+
   """
   def team_get(id) do
     Repo.get!(Team, id)
@@ -69,6 +124,11 @@ defmodule Timemachine.Data do
 
   @doc """
   Returns all teams.
+
+  ## Returns
+
+  Returns a list of teams as `%Team{}` structs.
+
   """
   def team_list do
     Repo.all(from t in Team, order_by: :id)
@@ -76,7 +136,17 @@ defmodule Timemachine.Data do
   end
 
   @doc """
-  Edits the team with the given `attrs`. `attrs` can contain `"name"`.
+  Edits the team with the given `attrs`.
+
+  ## Parameters
+
+  - `team` (type: %Team{}): The team to be updated.
+  - `attrs` (type: map()): Map containing attributes for the team. Can include `"name"`.
+
+  ## Returns
+
+  Returns `:ok` if the team is successfully updated.
+
   """
   def team_update(%Team{} = team, attrs) do
     team
@@ -92,7 +162,16 @@ defmodule Timemachine.Data do
   alias Timemachine.Data.User
 
   @doc """
-  Creates a new user. `attrs` should contain `"username"`, `"email"`, `"password"` and a optional `"role"`.
+  Creates a new user.
+
+  ## Parameters
+
+  - `attrs` (type: map()): Map containing user attributes, including `"username"`, `"email"`, `"password"`, and an optional `"role"`.
+
+  ## Returns
+
+  Returns the newly created user, preloaded with associated teams.
+
   """
   def user_create(attrs \\ %{}) do
     %User{role: User.default_role()}
@@ -103,6 +182,15 @@ defmodule Timemachine.Data do
 
   @doc """
   Deletes the given user.
+
+  ## Parameters
+
+  - `user` (type: %User{}): The user to be deleted.
+
+  ## Returns
+
+  Returns `:ok` if the user is successfully deleted.
+
   """
   def user_delete(%User{} = user) do
     Repo.delete(user)
@@ -110,6 +198,15 @@ defmodule Timemachine.Data do
 
   @doc """
   Returns the team with the same `id`.
+
+  ## Parameters
+
+  - `id` (type: any()): The ID of the user to be retrieved.
+
+  ## Returns
+
+  Returns the user as a `%User{}` struct.
+
   """
   def user_get(id) do
     Repo.get!(User, id)
@@ -117,7 +214,16 @@ defmodule Timemachine.Data do
   end
 
   @doc """
-  Returns the bearer token from a `conn` by reading `authorization` header.
+  Searches for users based on the specified parameters.
+
+  ## Parameters
+
+  - `params` (type: map()): Map containing search parameters. Can include `"username"` and `"email"`.
+
+  ## Returns
+
+  Returns a list of users as `%User{}` structs.
+
   """
   def user_search(params) do
     query = from u in User, order_by: :id, preload: :teams
@@ -136,7 +242,16 @@ defmodule Timemachine.Data do
   end
 
   @doc """
-  Tries to authenticate the user. `credentials` is a `Map` with keys `"username"` and `"password"`.
+  Tries to authenticate the user.
+
+  ## Parameters
+
+  - `credentials` (type: map()): Map containing credentials with keys `"username"` and `"password"`.
+
+  ## Returns
+
+  Returns `{:ok, user}` if authentication is successful, or `{:error, 401}` if not.
+
   """
   def user_try_login(%{"username" => username, "password" => password} = _credentials) do
     case Repo.one(from(u in User, where: [username: ^username], limit: 1, preload: :teams)) do
@@ -151,7 +266,17 @@ defmodule Timemachine.Data do
   end
 
   @doc """
-  Returns the bearer token from a `conn` by reading `authorization` header.
+  Tries to authenticate the user.
+
+  ## Parameters
+
+  - `user_id` (type: any()): The ID of the user.
+  - `password` (type: string()): The user's password.
+
+  ## Returns
+
+  Returns `{:ok, user}` if authentication is successful, or `{:error, 401}` if not.
+
   """
   def user_try_login(user_id, password) do
     case user_get(user_id) do
@@ -166,7 +291,17 @@ defmodule Timemachine.Data do
   end
 
   @doc """
-  Returns the bearer token from a `conn` by reading `authorization` header.
+  Updates the user's information.
+
+  ## Parameters
+
+  - `user` (type: %User{}): The user to be updated.
+  - `attrs` (type: map()): Map containing attributes to be updated.
+
+  ## Returns
+
+  Returns `:ok` if the user is successfully updated.
+
   """
   def user_update(%User{} = user, attrs) do
     user
@@ -188,7 +323,17 @@ defmodule Timemachine.Data do
   alias Timemachine.Data.UserTeam
 
   @doc """
-  Returns the bearer token from a `conn` by reading `authorization` header.
+  Creates a new user-team relationship.
+
+  ## Parameters
+
+  - `user_id` (type: any()): The ID of the user.
+  - `team_id` (type: any()): The ID of the team.
+
+  ## Returns
+
+  Returns `:ok` if the user-team relationship is successfully created.
+
   """
   def userteam_create(user_id, team_id) do
     %UserTeam{}
@@ -197,7 +342,17 @@ defmodule Timemachine.Data do
   end
 
   @doc """
-  Returns the bearer token from a `conn` by reading `authorization` header.
+  Deletes an existing user-team relationship.
+
+  ## Parameters
+
+  - `user_id` (type: any()): The ID of the user.
+  - `team_id` (type: any()): The ID of the team.
+
+  ## Returns
+
+  Returns `:ok` if the user-team relationship is successfully deleted.
+
   """
   def userteam_delete(user_id, team_id) do
     Repo.one(from(ut in UserTeam, where: [user_id: ^user_id, team_id: ^team_id]))
@@ -207,7 +362,17 @@ defmodule Timemachine.Data do
   alias Timemachine.Data.Workingtime
 
   @doc """
-  Returns the bearer token from a `conn` by reading `authorization` header.
+  Creates a new working time entry.
+
+  ## Parameters
+
+  - `attrs` (type: map, default: %{}): Map containing attributes for the working time. Should include `"start"` and `"end"`.
+  - `user_id` (type: any()): The ID of the user.
+
+  ## Returns
+
+  Returns `:ok` if the working time entry is successfully created.
+
   """
   def workingtime_create(attrs \\ %{}, user_id) do
     %Workingtime{user_id: user_id}
@@ -218,14 +383,33 @@ defmodule Timemachine.Data do
   end
 
   @doc """
-  Returns the bearer token from a `conn` by reading `authorization` header.
+  Deletes an existing working time entry.
+
+  ## Parameters
+
+  - `workingtime` (type: %Workingtime{}): The working time entry to be deleted.
+
+  ## Returns
+
+  Returns `:ok` if the working time entry is successfully deleted.
+
   """
   def workingtime_delete(%Workingtime{} = workingtime) do
     Repo.delete(workingtime)
   end
 
   @doc """
-  Returns the bearer token from a `conn` by reading `authorization` header.
+  Generates a new working time entry based on the last clock entry.
+
+  ## Parameters
+
+  - `user_id` (type: any()): The ID of the user.
+  - `end_time` (type: any()): The end time of the working time.
+
+  ## Returns
+
+  Returns `:ok` if the working time entry is successfully generated.
+
   """
   def workingtime_generate(user_id, end_time) do
     last_clock = clock_get_last_by_user_id(user_id)
@@ -235,7 +419,16 @@ defmodule Timemachine.Data do
   end
 
   @doc """
-  Returns the workingtime with the same `id`.
+  Returns the working time entry with the same `id`.
+
+  ## Parameters
+
+  - `id` (type: any()): The ID of the working time entry.
+
+  ## Returns
+
+  Returns the working time entry as a `%Workingtime{}` struct.
+
   """
   def workingtime_get(id) do
     Repo.get!(Workingtime, id)
@@ -243,7 +436,12 @@ defmodule Timemachine.Data do
   end
 
   @doc """
-  Returns the bearer token from a `conn` by reading `authorization` header.
+  Returns a list of all working time entries.
+
+  ## Returns
+
+  Returns a list of working time entries as `%Workingtime{}` structs.
+
   """
   def workingtime_list do
     Repo.all(from w in Workingtime, order_by: :id)
@@ -251,7 +449,18 @@ defmodule Timemachine.Data do
   end
 
   @doc """
-  Returns the bearer token from a `conn` by reading `authorization` header.
+  Searches for working time entries within a specified time range.
+
+  ## Parameters
+
+  - `user_id` (type: any()): The ID of the user.
+  - `start_working` (type: any()): The start of the time range for the working time entries.
+  - `end_working` (type: any()): The end of the time range for the working time entries.
+
+  ## Returns
+
+  Returns a list of working time entries within the specified time range.
+
   """
   def workingtime_search(user_id, start_working, end_working) do
     query = from(w in Workingtime, where: [user_id: ^user_id], order_by: :id, preload: :user)
@@ -268,7 +477,17 @@ defmodule Timemachine.Data do
   end
 
   @doc """
-  Returns the bearer token from a `conn` by reading `authorization` header.
+  Updates an existing working time entry.
+
+  ## Parameters
+
+  - `workingtime` (type: %Workingtime{}): The working time entry to be updated.
+  - `attrs` (type: map()): Map containing attributes to be updated.
+
+  ## Returns
+
+  Returns `:ok` if the working time entry is successfully updated.
+
   """
   def workingtime_update(%Workingtime{} = workingtime, attrs) do
     workingtime
@@ -276,10 +495,8 @@ defmodule Timemachine.Data do
     |> Repo.update()
   end
 
-
   @doc false
   def workingtime_change(%Workingtime{} = workingtime, attrs \\ %{}) do
     Workingtime.changeset(workingtime, attrs)
   end
-
 end

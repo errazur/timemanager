@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-EPF2X7PV.js"></script>
-    <script src="dist/sidebar_items-A7025C2F.js"></script>
+    <script src="dist/sidebar_items-A3F5AC1B.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -156,7 +156,7 @@ Pages
 
       </div>
 
-        <div class="summary-synopsis"><p>Returns the <code class="inline">id</code> of the current <code class="inline">user</code>. It is extracted from the bearer.</p></div>
+        <div class="summary-synopsis"><p>Extracts the <code class="inline">id</code> of the current user from the bearer token.</p></div>
 
     </div>
 
@@ -166,7 +166,7 @@ Pages
 
       </div>
 
-        <div class="summary-synopsis"><p>Returns the bearer token from a <code class="inline">conn</code> by reading <code class="inline">authorization</code> header.</p></div>
+        <div class="summary-synopsis"><p>Retrieves the bearer token from a connection by reading the <code class="inline">authorization</code> header.</p></div>
 
     </div>
 
@@ -278,7 +278,19 @@ Pages
 
       </div>
 
-<p>Returns the <code class="inline">id</code> of the current <code class="inline">user</code>. It is extracted from the bearer.</p>
+<p>Extracts the <code class="inline">id</code> of the current user from the bearer token.</p><h2 id="get_current_user_id/1-parameters" class="section-heading">
+  <a href="#get_current_user_id/1-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The Plug connection.</li></ul><h2 id="get_current_user_id/1-returns" class="section-heading">
+  <a href="#get_current_user_id/1-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Returns the <code class="inline">id</code> of the current user or <code class="inline">nil</code> if extraction fails.</p>
   </section>
 </section>
 <section class="detail" id="get_from_conn/1">
@@ -301,7 +313,19 @@ Pages
 
       </div>
 
-<p>Returns the bearer token from a <code class="inline">conn</code> by reading <code class="inline">authorization</code> header.</p>
+<p>Retrieves the bearer token from a connection by reading the <code class="inline">authorization</code> header.</p><h2 id="get_from_conn/1-parameters" class="section-heading">
+  <a href="#get_from_conn/1-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The Plug connection.</li></ul><h2 id="get_from_conn/1-returns" class="section-heading">
+  <a href="#get_from_conn/1-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Returns a tuple <code class="inline">{:ok, token}</code> if the token is found, or <code class="inline">{:error, reason}</code> if not found.</p>
   </section>
 </section>
 <section class="detail" id="verify_and_validate/3">

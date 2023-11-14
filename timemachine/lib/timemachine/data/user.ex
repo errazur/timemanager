@@ -8,11 +8,25 @@ defmodule Timemachine.Data.User do
 
   @default_role "employee"
 
-  @doc """
-  When creating a user, the `:role` field uses the default value if no role is specified or the specified role does not exist.
-  """
   def default_role, do: @default_role
 
+  @doc """
+  Defines the schema for the 'users' table, representing users in the Timemachine application.
+
+  ## Fields
+
+  - `:username` (type: string): Unique username for the user.
+  - `:email` (type: string): Unique email address for the user.
+  - `:password_hash` (type: binary): Hashed password for the user.
+  - `:role` (type: string, default: #{@default_role}): Role of the user (one of #{@roles}).
+  - `:teams` (type: association): Many-to-many association with teams through the `UserTeam` join table.
+  - `timestamps` (type: :utc_datetime): Automatic timestamps for record creation and updates.
+
+  ## Default Role
+
+  When creating a user, the `:role` field uses the default value if no role is specified or the specified role does not exist.
+
+  """
   schema "users" do
     # UNIQUE
     field :username, :string
@@ -43,12 +57,14 @@ defmodule Timemachine.Data.User do
     |> cast_assoc(:teams)
   end
 
+  @doc false
   def clean(attrs) do
     attrs
     |> replace_password_by_hash()
     |> verify_role()
   end
 
+  @doc false
   defp replace_password_by_hash(attrs) do
     password = Map.get(attrs, "password")
 
@@ -61,6 +77,7 @@ defmodule Timemachine.Data.User do
     end
   end
 
+  @doc false
   defp verify_role(attrs) do
     role = Map.get(attrs, "role")
 
@@ -73,6 +90,7 @@ defmodule Timemachine.Data.User do
   end
 
   defimpl Jason.Encoder do
+    @doc false
     def encode(user, _opts) do
       %{
         "id" => user.id,

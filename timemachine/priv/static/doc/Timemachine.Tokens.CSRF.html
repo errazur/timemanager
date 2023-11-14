@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-EPF2X7PV.js"></script>
-    <script src="dist/sidebar_items-A7025C2F.js"></script>
+    <script src="dist/sidebar_items-A3F5AC1B.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -213,7 +213,19 @@ Pages
 
       </div>
 
-<p>Checks if the given CSRF token matches the stored one for this <code class="inline">user_id</code>.</p>
+<p>Checks if the given CSRF token matches the stored one for this <code class="inline">user_id</code>.</p><h2 id="authorized?/2-parameters" class="section-heading">
+  <a href="#authorized?/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">user_id</code> (type: integer()): The user ID for whom the CSRF token is checked.</li><li><code class="inline">csrf</code> (type: String.t()): The CSRF token to be checked.</li></ul><h2 id="authorized?/2-returns" class="section-heading">
+  <a href="#authorized?/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Returns <code class="inline">true</code> if the CSRF token matches the stored one, otherwise <code class="inline">false</code>.</p>
   </section>
 </section>
 <section class="detail" id="delete/1">
@@ -236,7 +248,19 @@ Pages
 
       </div>
 
-<p>Deletes the CSRF token stored for the given <code class="inline">user_id</code>.</p>
+<p>Deletes the CSRF token stored for the given <code class="inline">user_id</code>.</p><h2 id="delete/1-parameters" class="section-heading">
+  <a href="#delete/1-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">user_id</code> (type: integer()): The user ID for whom the CSRF token is deleted.</li></ul><h2 id="delete/1-returns" class="section-heading">
+  <a href="#delete/1-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Returns <code class="inline">:ok</code> if the token is deleted successfully.</p>
   </section>
 </section>
 <section class="detail" id="generate/1">
@@ -259,7 +283,19 @@ Pages
 
       </div>
 
-<p>Generates a new CSRF token for the given <code class="inline">user_id</code>. Use <code class="inline">get(user_id)</code> to get the token.</p>
+<p>Generates a new CSRF token for the given <code class="inline">user_id</code>. Use <code class="inline">get(user_id)</code> to get the token.</p><h2 id="generate/1-parameters" class="section-heading">
+  <a href="#generate/1-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">user_id</code> (type: integer()): The user ID for whom the CSRF token is generated.</li></ul><h2 id="generate/1-returns" class="section-heading">
+  <a href="#generate/1-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Returns <code class="inline">:ok</code> if the token is generated successfully.</p>
   </section>
 </section>
 <section class="detail" id="get/1">
@@ -282,7 +318,19 @@ Pages
 
       </div>
 
-<p>Returns the CSRF token stored for the given <code class="inline">user_id</code>.</p>
+<p>Returns the CSRF token stored for the given <code class="inline">user_id</code>.</p><h2 id="get/1-parameters" class="section-heading">
+  <a href="#get/1-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">user_id</code> (type: integer()): The user ID for whom the CSRF token is retrieved.</li></ul><h2 id="get/1-returns" class="section-heading">
+  <a href="#get/1-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Returns the CSRF token as a string.</p>
   </section>
 </section>
 <section class="detail" id="get_from_conn/1">
@@ -305,7 +353,19 @@ Pages
 
       </div>
 
-<p>Returns the CSRF token from a <code class="inline">conn</code> by reading <code class="inline">x-csrf-token</code> header.</p>
+<p>Returns the CSRF token from a <code class="inline">conn</code> by reading <code class="inline">x-csrf-token</code> header.</p><h2 id="get_from_conn/1-parameters" class="section-heading">
+  <a href="#get_from_conn/1-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The Plug connection.</li></ul><h2 id="get_from_conn/1-returns" class="section-heading">
+  <a href="#get_from_conn/1-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Returns a tuple <code class="inline">{:ok, csrf}</code> if the CSRF token is found, or <code class="inline">{:error, reason}</code> if not found.</p>
   </section>
 </section>
 
