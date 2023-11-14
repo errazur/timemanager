@@ -54,7 +54,7 @@
     <div v-if="userDetails" @click.self="userDetails = false" class="flex flex-col justify-end sm:flex-row fixed w-full h-screen bg-black bg-opacity-50 z-20">
         <ProfileManagmentUser @details="userDetails = false" />
     </div>
-    <router-view :class="{ 'sm:mt-28 sm:mb-10': this.$route.name !== 'login'}"></router-view>
+    <router-view :class="{ 'sm:mt-28 sm:mb-10': this.$route.name !== 'login' && this.$route.name !== 'clock'}"></router-view>
 </template>
 
 <script>
@@ -84,6 +84,9 @@ export default {
         }
     },
     mounted() {
+        if (this.user.id === 0) {
+            return;
+        }
         this.$network.get('/api/tokens')
             .then(response => response.json())
             .then(data => {
@@ -91,6 +94,8 @@ export default {
 
                 const user = jwtDecode(data.bearer).user;
                 this.$store.commit('auth/loginSuccess', user);
+
+                this.$store.commit('auth/setRole', user.role);
 
                 const csrfToken = data._csrf_token;
                 this.$store.commit('auth/setCsrfToken', csrfToken);

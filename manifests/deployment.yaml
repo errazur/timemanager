@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: timemachineback
+  name: timemachine
   labels:
-    app: timemachineback
-  namespace: namespace-workflow-1699865705247
+    app: timemachine
+  namespace: namespace-workflow-1699869789748
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: timemachineback
+      app: timemachine
   template:
     metadata:
       labels:
-        app: timemachineback
+        app: timemachine
     spec:
       containers:
-        - name: timemachineback
-          image: acrworkflow1699865705247.azurecr.io/image-workflow-1699865705247:latest
+        - name: timemachine
+          image: acrworkflow1699869789748.azurecr.io/image-workflow-1699869789748:latest
           ports:
-            - containerPort: 80
+            - containerPort: 4001

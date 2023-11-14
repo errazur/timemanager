@@ -23,8 +23,6 @@ class NetworkManager {
         /** contient "connected" (boolean) et "connectionType" ('wifi' | 'cellular' | 'none' | 'unknown') */
         this.status = status;
 
-        console.log(status);
-
         // await Dialog.alert({
         //     title: 'Changement de connection',
         //     message: JSON.stringify(status),
@@ -41,8 +39,10 @@ class NetworkManager {
     }
 
     processPendingRequests() {
-        /** @type {array} */
-        const requests = this.storage.get(storedReqs) || []
+        let requests = this.storage.get(storedReqs);
+        if (!Array.isArray(requests)) {
+            requests = [];
+        }
         this.storage.set(storedReqs, [])
         requests.forEach(req => {
             this.fetch(req.method, req.uri, req.body)
