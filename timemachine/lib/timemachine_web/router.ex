@@ -91,4 +91,66 @@ defmodule TimemachineWeb.Router do
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
+
+  @moduledoc """
+  The main router for TimemachineWeb, responsible for handling browser, API, and authenticated requests.
+
+  ## Pipelines
+
+  - `:browser`: Handles browser requests.
+  - `:api`: Handles API requests.
+  - `:auth`: Handles authenticated requests.
+
+  ## Public Routes
+
+  - `GET /api/users`: Search for users. Parameters: `?email=XXX&username=YYY`.
+  - `GET /api/users/:id`: Get details of a specific user.
+  - `POST /api/login`: User login.
+
+  ## Protected Routes
+
+  Requires both `:api` and `:auth` pipelines.
+
+  ### Miscellaneous
+
+  - `GET /api/tokens`: Get user tokens.
+
+  ### Users
+
+  - `PUT /api/users/password/:id`: Update user password.
+  - `POST /api/users`: Create a new user.
+  - `PUT /api/users/:id`: Update user details.
+  - `DELETE /api/users/:id`: Delete a user.
+
+  ### Clocks
+
+  - `GET /api/clocks/teams/:team_id`: Get clocks by team.
+  - `POST /api/clocks/teams/:team_id`: Create a clock for a team.
+  - `GET /api/clocks/:user_id`: Get clocks by user.
+  - `POST /api/clocks/:user_id`: Create a clock for a user.
+
+  ### Working Times
+
+  - `GET /api/workingtimes/teams/:team_id`: Get working times by team.
+  - `POST /api/workingtimes/teams/:team_id`: Create a working time for a team.
+  - `GET /api/workingtimes/:user_id`: Get working times by user.
+  - `GET /api/workingtimes/:user_id/:id`: Get details of a specific working time.
+  - `POST /api/workingtimes/:user_id`: Create a working time for a user.
+  - `PUT /api/workingtimes/:id`: Update working time.
+  - `DELETE /api/workingtimes/:id`: Delete working time.
+
+  ### Teams
+
+  - `GET /api/teams`: Get all teams.
+  - `GET /api/teams/:id`: Get details of a specific team.
+  - `POST /api/teams`: Create a new team.
+  - `PUT /api/teams/:id`: Update team details.
+  - `DELETE /api/teams/:id`: Delete a team.
+
+  ### Users Teams
+
+  - `POST /api/users/:user_id/teams/:team_id`: Add a user to a team.
+  - `DELETE /api/users/:user_id/teams/:team_id`: Remove a user from a team.
+
+  """
 end

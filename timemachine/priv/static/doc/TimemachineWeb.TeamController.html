@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-EPF2X7PV.js"></script>
-    <script src="dist/sidebar_items-A7025C2F.js"></script>
+    <script src="dist/sidebar_items-A3F5AC1B.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -117,6 +117,16 @@ Pages
 </h1>
 
 
+  <section id="moduledoc">
+<p>Controller for managing team data.</p><h2 id="module-actions" class="section-heading">
+  <a href="#module-actions" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Actions</span>
+</h2>
+<ul><li><code class="inline">index(conn, _params)</code>: Retrieve a list of all teams.</li><li><code class="inline">create(conn, %{&quot;team&quot; =&gt; team_params})</code>: Create a new team.</li><li><code class="inline">show(conn, %{&quot;id&quot; =&gt; id})</code>: Retrieve details of a specific team.</li><li><code class="inline">update(conn, %{&quot;id&quot; =&gt; id, &quot;team&quot; =&gt; team_params})</code>: Update details of a specific team.</li><li><code class="inline">delete(conn, %{&quot;id&quot; =&gt; id})</code>: Delete a specific team.</li></ul>
+  </section>
+
 
   <section id="summary" class="details-list">
     <h1 class="section-heading">
@@ -136,6 +146,8 @@ Pages
 
       </div>
 
+        <div class="summary-synopsis"><p>Create a new team.</p></div>
+
     </div>
 
     <div class="summary-row">
@@ -143,6 +155,8 @@ Pages
         <a href="#delete/2" translate="no">delete(conn, map)</a>
 
       </div>
+
+        <div class="summary-synopsis"><p>Delete a specific team.</p></div>
 
     </div>
 
@@ -152,6 +166,8 @@ Pages
 
       </div>
 
+        <div class="summary-synopsis"><p>Retrieve a list of all teams.</p></div>
+
     </div>
 
     <div class="summary-row">
@@ -160,6 +176,8 @@ Pages
 
       </div>
 
+        <div class="summary-synopsis"><p>Retrieve details of a specific team.</p></div>
+
     </div>
 
     <div class="summary-row">
@@ -167,6 +185,8 @@ Pages
         <a href="#update/2" translate="no">update(conn, map)</a>
 
       </div>
+
+        <div class="summary-synopsis"><p>Update details of a specific team.</p></div>
 
     </div>
 
@@ -197,7 +217,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Create a new team.</p><h2 id="create/2-parameters" class="section-heading">
+  <a href="#create/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters, including <code class="inline">&quot;team&quot;</code>.</li></ul><h2 id="create/2-returns" class="section-heading">
+  <a href="#create/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Renders the <code class="inline">:show</code> view with the details of the created team.</p>
   </section>
 </section>
 <section class="detail" id="delete/2">
@@ -214,7 +246,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Delete a specific team.</p><h2 id="delete/2-parameters" class="section-heading">
+  <a href="#delete/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters, including <code class="inline">&quot;id&quot;</code>.</li></ul><h2 id="delete/2-returns" class="section-heading">
+  <a href="#delete/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Responds with a <code class="inline">:no_content</code> status.</p>
   </section>
 </section>
 <section class="detail" id="index/2">
@@ -231,7 +275,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Retrieve a list of all teams.</p><h2 id="index/2-parameters" class="section-heading">
+  <a href="#index/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters (not used).</li></ul><h2 id="index/2-returns" class="section-heading">
+  <a href="#index/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Renders the <code class="inline">:index</code> view with a list of all teams.</p>
   </section>
 </section>
 <section class="detail" id="show/2">
@@ -248,7 +304,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Retrieve details of a specific team.</p><h2 id="show/2-parameters" class="section-heading">
+  <a href="#show/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters, including <code class="inline">&quot;id&quot;</code>.</li></ul><h2 id="show/2-returns" class="section-heading">
+  <a href="#show/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Renders the <code class="inline">:show</code> view with details of the specified team.</p>
   </section>
 </section>
 <section class="detail" id="update/2">
@@ -265,7 +333,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Update details of a specific team.</p><h2 id="update/2-parameters" class="section-heading">
+  <a href="#update/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">params</code> (type: map()): Map containing parameters, including <code class="inline">&quot;id&quot;</code> and <code class="inline">&quot;team&quot;</code>.</li></ul><h2 id="update/2-returns" class="section-heading">
+  <a href="#update/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>Renders the <code class="inline">:show</code> view with the updated details of the team.</p>
   </section>
 </section>
 

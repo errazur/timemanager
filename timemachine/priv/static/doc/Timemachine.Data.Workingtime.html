@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-EPF2X7PV.js"></script>
-    <script src="dist/sidebar_items-A7025C2F.js"></script>
+    <script src="dist/sidebar_items-A3F5AC1B.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -118,6 +118,69 @@ Pages
 
 
 
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#__struct__/0" translate="no">%Timemachine.Data.Workingtime{}</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Defines the schema for the 'workingtimes' table, representing working times in the Timemachine application.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="__struct__/0">
+
+  <div class="detail-header">
+    <a href="#__struct__/0" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">%Timemachine.Data.Workingtime{}</h1>
+
+
+      <span class="note">(struct)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Defines the schema for the 'workingtimes' table, representing working times in the Timemachine application.</p><h2 id="__struct__/0-fields" class="section-heading">
+  <a href="#__struct__/0-fields" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Fields</span>
+</h2>
+<ul><li><code class="inline">:start</code> (type: :utc_datetime): Start time of the working time.</li><li><code class="inline">:end</code> (type: :utc_datetime): End time of the working time.</li><li><code class="inline">:user</code> (type: association): Belongs to a user through the <code class="inline">user_id</code> foreign key.</li><li><code class="inline">timestamps</code> (type: :utc_datetime): Automatic timestamps for record creation and updates.</li></ul>
+  </section>
+</section>
+
+    </div>
+  </section>
 
       <footer class="footer">
         <p>

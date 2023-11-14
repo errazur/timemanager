@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-EPF2X7PV.js"></script>
-    <script src="dist/sidebar_items-A7025C2F.js"></script>
+    <script src="dist/sidebar_items-A3F5AC1B.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -117,6 +117,25 @@ Pages
 </h1>
 
 
+  <section id="moduledoc">
+<p>Plug for Bearer token validation.</p><h2 id="module-description" class="section-heading">
+  <a href="#module-description" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Description</span>
+</h2>
+<p>This plug is responsible for authenticating requests using Bearer tokens. It checks the presence of a Bearer token in the request and verifies its validity. If the token is invalid or missing, it falls back to the <code class="inline">FallbackController</code> with a 401 Unauthorized error.</p><h2 id="module-usage" class="section-heading">
+  <a href="#module-usage" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Usage</span>
+</h2>
+<p>Add this plug to your pipeline in the router or controller to enforce Bearer token validation.</p><pre><code class="makeup elixir" translate="no"><span class="n">pipeline</span><span class="w"> </span><span class="ss">:api</span><span class="w"> </span><span class="k" data-group-id="9394208233-1">do</span><span class="w">
+  </span><span class="n">plug</span><span class="w"> </span><span class="nc">TimemachineWeb.Plugs.BearerValidate</span><span class="w">
+  </span><span class="c1"># ... other plugs and middleware</span><span class="w">
+</span><span class="k" data-group-id="9394208233-1">end</span></code></pre>
+  </section>
+
 
   <section id="summary" class="details-list">
     <h1 class="section-heading">
@@ -136,6 +155,8 @@ Pages
 
       </div>
 
+        <div class="summary-synopsis"><p>Call function for the BearerValidate plug.</p></div>
+
     </div>
 
     <div class="summary-row">
@@ -143,6 +164,8 @@ Pages
         <a href="#init/1" translate="no">init(default)</a>
 
       </div>
+
+        <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/plug/1.15.1/Plug.html#c:init/1"><code class="inline">Plug.init/1</code></a>.</p></div>
 
     </div>
 
@@ -173,7 +196,19 @@ Pages
 
   <section class="docstring">
 
-
+<p>Call function for the BearerValidate plug.</p><h2 id="call/2-parameters" class="section-heading">
+  <a href="#call/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">conn</code> (type: Plug.Conn.t()): The connection struct.</li><li><code class="inline">_default</code> (type: term()): The default value.</li></ul><h2 id="call/2-returns" class="section-heading">
+  <a href="#call/2-returns" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Returns</span>
+</h2>
+<p>If the Bearer token is valid, the connection is returned. If the token is invalid or missing, it falls back to the <code class="inline">FallbackController</code> with a 401 Unauthorized error.</p>
   </section>
 </section>
 <section class="detail" id="init/1">
@@ -190,7 +225,7 @@ Pages
 
   <section class="docstring">
 
-
+<p>Callback implementation for <a href="https://hexdocs.pm/plug/1.15.1/Plug.html#c:init/1"><code class="inline">Plug.init/1</code></a>.</p>
   </section>
 </section>
 
