@@ -1,11 +1,16 @@
-defmodule Timemachine.Accounts.User do
+defmodule Timemachine.Data.User do
   use Ecto.Schema
   import Ecto.Changeset
 
   @derive {Jason.Encoder, only: [:id, :username, :email]}
 
   @roles ["employee", "manager", "admin"]
+
   @default_role "employee"
+
+  @doc """
+  When creating a user, the `:role` field uses the default value if no role is specified or the specified role does not exist.
+  """
   def default_role, do: @default_role
 
   schema "users" do
@@ -21,8 +26,8 @@ defmodule Timemachine.Accounts.User do
     # Nota Bene : if inserted value is not included in @roles, @default_role will be set instead
     field :role, :string, default: @default_role
 
-    many_to_many :teams, Timemachine.Accounts.Team,
-      join_through: Timemachine.Accounts.UserTeam
+    many_to_many :teams, Timemachine.Data.Team,
+      join_through: Timemachine.Data.UserTeam
 
     timestamps(type: :utc_datetime)
   end

@@ -1,4 +1,6 @@
 defmodule Timemachine.Utils do
+  @moduledoc false
+
   def parse_boolean(boolean) do
     case boolean do
       "true" -> true

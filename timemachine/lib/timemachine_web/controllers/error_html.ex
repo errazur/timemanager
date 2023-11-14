@@ -1,4 +1,6 @@
 defmodule TimemachineWeb.ErrorHTML do
+  @moduledoc false
+
   use TimemachineWeb, :html
 
   # If you want to customize your error pages,

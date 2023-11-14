@@ -1,5 +1,7 @@
 defmodule TimemachineWeb.WorkingtimeJSON do
-  alias Timemachine.Accounts.Workingtime
+  @moduledoc false
+
+  alias Timemachine.Data.Workingtime
 
   @doc """
   Renders a list of workingtimes.

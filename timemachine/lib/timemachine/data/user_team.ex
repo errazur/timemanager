@@ -1,10 +1,10 @@
-defmodule Timemachine.Accounts.UserTeam do
+defmodule Timemachine.Data.UserTeam do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "users_teams" do
-    belongs_to :user, Timemachine.Accounts.User
-    belongs_to :team, Timemachine.Accounts.Team
+    belongs_to :user, Timemachine.Data.User
+    belongs_to :team, Timemachine.Data.Team
 
     timestamps(type: :utc_datetime)
   end

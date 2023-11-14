@@ -1,4 +1,4 @@
-defmodule TimemachineWeb.Plugs.ValidateBearer do
+defmodule TimemachineWeb.Plugs.BearerValidate do
   alias Timemachine.Tokens.Bearer
   alias TimemachineWeb.FallbackController
 

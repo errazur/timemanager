@@ -1,11 +1,11 @@
-defmodule Timemachine.Accounts.Clock do
+defmodule Timemachine.Data.Clock do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "clocks" do
     field :status, :boolean, default: false
     field :time, :utc_datetime
-    belongs_to :user, Timemachine.Accounts.User, foreign_key: :user_id
+    belongs_to :user, Timemachine.Data.User, foreign_key: :user_id
 
     timestamps(type: :utc_datetime)
   end

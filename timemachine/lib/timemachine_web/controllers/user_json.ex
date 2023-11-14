@@ -1,4 +1,6 @@
 defmodule TimemachineWeb.UserJSON do
+  @moduledoc false
+
   alias Timemachine.Accounts.User
   alias Timemachine.Tokens.Bearer
 

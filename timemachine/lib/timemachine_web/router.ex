@@ -15,8 +15,12 @@ defmodule TimemachineWeb.Router do
   end
 
   pipeline :auth do
-    plug TimemachineWeb.Plugs.ValidateBearer
-    plug TimemachineWeb.Plugs.ValidateCSRF
+    plug TimemachineWeb.Plugs.BearerValidate
+    plug TimemachineWeb.Plugs.CSRFValidate
+  end
+
+  scope "/doc", TimemachineWeb do
+    pipe_through :doc
   end
 
   # PUBLIC ROUTES

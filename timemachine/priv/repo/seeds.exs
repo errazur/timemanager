@@ -9,29 +9,29 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
-Timemachine.Accounts.create_user(%{
+Timemachine.Data.user_create(%{
   "username" => "macron",
   "email" => "macron@macron-demission.org",
   "password" => "explosion",
   "role" => "admin"
 })
-Timemachine.Accounts.create_user(%{
+Timemachine.Data.user_create(%{
   "username" => "flamby",
   "email" => "flamby@macron-demission.org",
   "password" => "1234",
   "role" => "manager"
 })
-Timemachine.Accounts.create_user(%{
+Timemachine.Data.user_create(%{
   "username" => "nicolas",
   "email" => "nicolas@macron-demission.org",
   "password" => "nicolas"
 })
-Timemachine.Accounts.create_team(%{
+Timemachine.Data.team_create(%{
   "name" => "Gouvernement",
 })
-Timemachine.Accounts.create_team(%{
+Timemachine.Data.team_create(%{
   "name" => "Rasta",
 })
-Timemachine.Accounts.create_user_team(1,1)
-Timemachine.Accounts.create_user_team(2,1)
-Timemachine.Accounts.create_user_team(3,2)
+Timemachine.Data.userteam_create(1,1)
+Timemachine.Data.userteam_create(2,1)
+Timemachine.Data.userteam_create(3,2)

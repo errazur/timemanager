@@ -1,5 +1,7 @@
 defmodule TimemachineWeb.ClockJSON do
-  alias Timemachine.Accounts.Clock
+  @moduledoc false
+
+  alias Timemachine.Data.Clock
 
   @doc """
   Renders a list of clocks.
