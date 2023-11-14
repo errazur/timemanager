@@ -1,7 +1,7 @@
 defmodule TimemachineWeb.UserJSON do
   @moduledoc false
 
-  alias Timemachine.Accounts.User
+  alias Timemachine.Data.User
   alias Timemachine.Tokens.Bearer
 
   def search(%{users: users}) do
