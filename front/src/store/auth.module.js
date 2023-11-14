@@ -1,4 +1,5 @@
 import { jwtDecode } from "jwt-decode";
+import router from "../router";
 
 let user = {
   id: 0,
@@ -11,8 +12,9 @@ if (token && typeof token === "string") {
     const decodedToken = jwtDecode(token);
     const expirationDate = new Date(decodedToken.exp * 1000);
 
-    if (expirationDate < new Date()) {
+    if (expirationDate < new Date() || token === "Bearer undefined") {
       localStorage.removeItem("token");
+      router.push("/login")
     } else {
       user = decodedToken.user;
     }
@@ -53,7 +55,10 @@ export const auth = {
     },
     logout(state) {
       state.status.loggedIn = false;
-      state.user = null;
+      state.user = {
+        id: 0,
+        username: 'Not Connected',
+      }
       state.csrfToken = null;
       localStorage.removeItem("token");
     },

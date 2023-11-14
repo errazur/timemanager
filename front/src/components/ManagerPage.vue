@@ -4,31 +4,31 @@
       <div class="flex gap-6 items-center mb-8 justify-between">
         <h1 class="text-3xl font-medium">Data for Team n° {{teamSelected}}</h1>
         <div>
-          <button @click="togglePopup" class="rounded bg-green-400 p-2 mr-6">Add a member</button>
-          <button @click="togglePopupTeam" class="rounded bg-green-300 p-2 mr-6">Add a team</button>
-          <button v-if="role === 'manager' || role === 'admin'" @click="togglePopupRegister" class="rounded bg-green-200 p-2">Add a user</button>
+          <button v-if="teamSelected" @click="togglePopup" class="rounded bg-green-400 p-2 mr-6">Add a member to the team</button>
+          <button @click="togglePopupTeam" class="rounded bg-green-300 p-2 mr-6">Create a team</button>
+          <button @click="togglePopupRegister" class="rounded bg-green-200 p-2">Create a user</button>
         </div>
       </div>
 
-      <div v-if="showPopupAddUser" class="fixed w-full h-full top-0 left-0  flex items-center justify-center bg-white/50 z-50">
+      <div v-if="showPopupAddUser" class="fixed w-full h-full top-0 left-0  flex items-center justify-center bg-white/50 z-50" @click.self="showPopupAddUser = false"> <!--Popup-->
         <div class="w-1/2 rounded shadow-md p-6 bg-white relative">
           <button @click="togglePopup" class="absolute right-3 top-3"><img src="@/assets/icons/close-circle.svg" alt=""></button>
-          <h2 class="text-2xl mb-6">Add team members</h2>
+          <h2 class="text-2xl mb-6">Add a member to the team</h2>
           <select v-model="newMember" class="w-full h-10 mb-6 border">
             <option v-for="user in users.data" :value="user.id">{{user.username}}</option>
           </select>
-          <button @click="addMember" class="rounded bg-green-300 p-2 w-full">Add user to team</button>
+          <button @click="addMember" class="rounded bg-green-300 p-2 w-full">Add user to the team</button>
         </div>
       </div>
-      <div v-if="showPopupAddTeam" class="fixed w-full h-full top-0 left-0  flex items-center justify-center bg-white/50 z-50">
+      <div v-if="showPopupAddTeam" class="fixed w-full h-full top-0 left-0  flex items-center justify-center bg-white/50 z-50" @click.self="showPopupAddTeam = false">
         <div class="w-1/2 rounded shadow-md p-6 bg-white relative">
           <button @click="togglePopupTeam" class="absolute right-3 top-3"><img src="@/assets/icons/close-circle.svg" alt=""></button>
-          <h2 class="text-2xl mb-6">Add new team</h2>
-          <input class="w-full p-2 mb-6 border" type="text" >
-          <button @click="createTeam" class="rounded bg-green-300 p-2 w-full">Add new team</button>
+          <h2 class="text-2xl mb-6">Add a team</h2>
+          <input class="w-full p-2 mb-6 border" type="text" v-model="newTeamName">
+          <button @click="createTeam" class="rounded bg-green-300 p-2 w-full">Create a new team</button>
         </div>
       </div>
-      <div v-if="showPopupRegister" class="fixed w-full h-full top-0 left-0  flex items-center justify-center bg-white/50 z-50">
+      <div v-if="showPopupRegister" class="fixed w-full h-full top-0 left-0  flex items-center justify-center bg-white/50 z-50" @click.self="showPopupRegister = false">
         <div class="w-1/2 rounded shadow-md p-6 bg-white relative">
         <button @click="togglePopupRegister" class="absolute right-3 top-3"><img src="@/assets/icons/close-circle.svg" alt=""></button>
         <form @submit.prevent="createUser">
@@ -41,7 +41,7 @@
         </form>
       </div>
       </div>
-      <select class="h-10 border border-gray-300 w-full" v-model="teamSelected" @change="handleTeamSelect()">
+      <select class="h-10 border border-gray-300 w-full" v-model="teamSelected" @change="handleTeamSelect()"> <!--Static-->
         <option disabled selected value="">Please select one</option>
         <option v-for="team in teams" :value="team.id">{{team.name}}</option>
       </select>
@@ -171,7 +171,6 @@ export default {
         return this.getNormHoursPerDay;
       },
       set(value) {
-        console.log(value)
         store.commit('setNormHoursPerDay', parseInt(value, 10));
       }
     },
@@ -184,9 +183,11 @@ export default {
       }
     },
     role() {
-      console.log(store.getters['auth/role'])
       return this.$store.getters['auth/role'];
-    }
+    },
+    userToken() {
+      return this.$store.getters['auth/user'];
+    },
   },
 
   methods: {
@@ -202,7 +203,6 @@ export default {
       if (selectedTeam) {
         this.membersList = selectedTeam.users;
       }
-      console.log(selectedTeam)
     },
     togglePopup() {
       this.showPopupAddUser = !this.showPopupAddUser;
@@ -215,11 +215,17 @@ export default {
     },
     async getTeams(){
       try {
-        // const userId = context.rootState.auth.user.id;
         const response = await this.$network.get(`/api/teams/`);
         const data =  await response.json();
-        this.teams = data.data
-        console.log("req", this.teams);
+        const userTeams = this.userToken.teams; 
+        const userRole = this.userToken.role; 
+
+        if (userRole === 'admin') {
+          this.teams = data.data;
+        } else {
+          const userTeamIds = userTeams.map(team => team.id); 
+          this.teams = data.data.filter(team => userTeamIds.includes(team.id));
+        }
       }
       catch (e) {
         console.log(e);
@@ -232,8 +238,16 @@ export default {
             "name": toRaw(this.newTeamName)
           }
         };
-        await this.$network.post(`/api/teams/`, body)
-        this.showPopupAddTeam = false
+        const response = await this.$network.post(`/api/teams/`, body);
+        const data = await response.json();
+        const newTeamId = data.data.id; 
+        this.showPopupAddTeam = false;
+
+        // Ajouter l'utilisateur à l'équipe nouvellement créée
+        this.teamSelected = newTeamId;
+        this.newMember = this.userToken.id; 
+        await this.addMember();
+        this.getTeams();
       }
       catch (e) {
         console.log("error :", e)
@@ -247,8 +261,6 @@ export default {
           start: new Date(workingtime.start),
           end: new Date(workingtime.end),
         }));
-
-        console.log("working time by team", this.dataTable)
       }
       catch(e){
         console.log(e)
@@ -281,13 +293,13 @@ export default {
           }
         }
         const response = await this.$network.post(`/api/workingtimes/${user_id}`, body)
+        await this.getWorkingTimeByTeam();
       }
       catch(e){
         console.log(e)
       }
     },
     async createWorkingTimeTeam(){
-      console.log(this.newWorkingTimeTeam)
       try {
         const body = {
           workingtime: {
@@ -296,7 +308,7 @@ export default {
           }
         }
         const response = await this.$network.post(`/api/workingtimes/teams/${this.teamSelected}`, body)
-        console.log(response);
+        await this.getWorkingTimeByTeam();
       }
       catch(e){
         console.log(e)
@@ -312,8 +324,7 @@ export default {
           }
         }
         const response = await this.$network.post(`/api/clocks/teams/${this.teamSelected}`, body);
-        console.log(response)
-        console.log(this.clockIn)
+        await this.getWorkingTimeByTeam();
       } catch (e) {
         console.log(e)
       }
@@ -329,6 +340,7 @@ export default {
          }
        };
        await this.$network.post(url, data)
+       await this.getUsers();
        this.showPopupRegister = false
      }
      catch(e){

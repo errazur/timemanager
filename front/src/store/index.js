@@ -75,7 +75,6 @@ const store = createStore(
               return state.chartOvertimeData
             },
             getChartNightHours(state){
-              console.log(state.limit, state.nightHours)
               return state.chartNightHours
             },
             getLimitHours(state){
@@ -94,11 +93,9 @@ const store = createStore(
               return state.workingTimesByUser
             },
             getMaxHour(state){
-                console.log(state.maxHour)
               return state.maxHour
             },
             getMinHour(state){
-              console.log(state.minHour)
               return state.minHour
             },
             getTeamSelectedManager (state){
@@ -292,7 +289,6 @@ const store = createStore(
                 const nowDate = new Date(dateNow);
                 const currentYear = nowDate.getFullYear();
                 state.hoursOfRTT = Math.floor(overtimeHoursPerYear[`${currentYear}`])
-                console.log("ici", overtimeHoursPerYear['2023']);
                 state.chartOvertimeData = {
                     labels: Object.keys(overtimeHoursPerYear),
                     datasets: [{
@@ -322,7 +318,6 @@ const store = createStore(
 
                 state.plannedNightHours = 0;
                 state.passedNightHours = 0;
-                console.log("avant init", state.plannedNightHours, state.passedNightHours,state.workingTimesCurrentMonth)
                 state.workingTimesCurrentMonth.forEach((time) => {
                     // ... votre code pour obtenir startDateTime, endDateTime et duration
                     const startDateTime = new Date(time.start);
@@ -345,7 +340,6 @@ const store = createStore(
                 // Mettez à jour les propriétés state seulement une fois après avoir calculé les heures de nuit
                 state.plannedNightHours = plannedNightHours;
                 state.passedNightHours = passedNightHours;
-                console.log("après init", state.plannedNightHours, state.passedNightHours,state.workingTimesCurrentMonth)
             },
 
             setData(state, workingTimes){
@@ -365,11 +359,11 @@ const store = createStore(
                     .filter((worktime) => {
                         const startWork = new Date(worktime.start);
                         if (today < new Date(worktime.start)) {
-                            console.log('future')
+                            //console.log('future')
                         } else if (today >= new Date(worktime.start) && today <= new Date(worktime.end)) {
-                            console.log("L'événement est en cours.");
+                            //console.log("L'événement est en cours.");
                         } else {
-                            console.log('passé')
+                            //console.log('passé')
                             return startWork >= startOfWeek && startWork < endOfWeek;
                         }
 
@@ -384,13 +378,11 @@ const store = createStore(
                         // Update minHours if the current working hours is smaller
                         if (new Date(worktime.start).getHours() < state.minHour) {
                             state.minHour = new Date(worktime.start).getHours();
-                            console.log('min',state.minHour)
                         }
 
                         // Update maxHours if the current working hours is larger
                         if (new Date(worktime.end).getHours() > state.maxHour) {
                             state.maxHour = new Date(worktime.end).getHours();
-                            console.log('max',state.maxHour)
                         }
                         return total + workingTime;
                     }, 0);
@@ -413,7 +405,6 @@ const store = createStore(
                     const userId = context.rootState.auth.user.id;
                     const response = await network.get(`/api/workingtimes/${userId}`);
                     const workingTimesData = await response.json();
-                    console.log("request : ",workingTimesData)
                     context.commit('setData', workingTimesData.data);
                     context.commit('setWorkingTimesPerMonth');
                     context.commit('setOvertimeHoursPerMonth');
@@ -427,17 +418,6 @@ const store = createStore(
                     console.error(error);
                 }
             },
-            async managerData(context){
-                try {
-                    // const userId = context.rootState.auth.user.id;
-                    const response = await network.get(`/api/teams/`);
-                    const data = await response.json();
-                    console.log("req", data);
-                }
-                catch (e) {
-                    console.log(e);
-                }
-            }
         }
     }
 );

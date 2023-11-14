@@ -57,7 +57,6 @@ export default {
                     user: workingtime.user,
                     id: workingtime.id
                 }));
-                console.log(this.workingTimesByUser)
             }
             catch (error) {
                 console.log("error :", error)
